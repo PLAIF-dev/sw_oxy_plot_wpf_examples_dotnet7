@@ -1,0 +1,6 @@
+/.vs
+/OxyPlotTest/obj
+/OxyPlotTest/bin
+/WpfExamples/obj
+/WpfExamples/bin
+/OxyPlotTest/*.user
