@@ -19,7 +19,7 @@ namespace RostopicTest
         private RosbridgeMgr()
         {
             _subscribers = new List<Subscriber>();
-            IsConnected = false;
+            _isConnected = false;
         }
         private static readonly Lazy<RosbridgeMgr> _instance = new Lazy<RosbridgeMgr>(() => new RosbridgeMgr());
         public static RosbridgeMgr Instance => _instance.Value;
@@ -31,13 +31,13 @@ namespace RostopicTest
 
         public async void Connect(string uri)
         {
-            if (IsConnected)
+            if (_isConnected)
             {
                 foreach (var s in _subscribers)
                 {
                     s.UnsubscribeAsync().Wait();
                 }
-                IsConnected = false;
+                _isConnected = false;
                 _subscribers.Clear();
 
                 if (_md is not null)
@@ -53,7 +53,6 @@ namespace RostopicTest
                     _md = new MessageDispatcher(new Socket(new Uri(uri)), new MessageSerializerV2_0());
                     _md.StartAsync().Wait();
 
-                    SubscribeMsg("/joint_states", "sensor_msgs/JointState");
 
                     //foreach (var tuple in _rosbrdgModel.GetSubscribeTopics())
                     //{
@@ -68,7 +67,7 @@ namespace RostopicTest
                     return;
                 }
 
-                IsConnected = true;
+                _isConnected = true;
             }
             //ToggleConnected();
         }
@@ -97,12 +96,17 @@ namespace RostopicTest
 
         private void _subscriber_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            string msg = e.Message["msg"]!.ToString();
 
-            switch (e.Message["topic"]!.ToString())
-            {
-            }
+        }
 
+        public async void SubscribeMsg(string topic, string msg_type, MessageReceivedHandler handler)
+        {
+            if (_md is null) return;
+
+            var s = new Subscriber(topic, msg_type, _md);
+            s.MessageReceived += handler;
+            await s.SubscribeAsync();
+            _subscribers.Add(s);
         }
 
         public async void SubscribeMsg(string topic, string msg_type)
