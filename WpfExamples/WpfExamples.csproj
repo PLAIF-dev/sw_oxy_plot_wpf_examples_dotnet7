@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
       <TargetFramework>net7.0-windows</TargetFramework>
+	  <EnableWindowsTargeting>true</EnableWindowsTargeting>
       <UseWPF>true</UseWPF>
       <UseWindowsForms>true</UseWindowsForms>
       <OutputType>WinExe</OutputType>
