@@ -13,3 +13,5 @@
 /DynamicCreateTest/obj
 /DynamicCreateTest/DynamicCreateTest.csproj.user
 /DynamicCreateTest/bin
+/Rosbridge/bin
+/Rosbridge/obj

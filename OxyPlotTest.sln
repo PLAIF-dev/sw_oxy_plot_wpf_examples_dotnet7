@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OxyPlotTest", "OxyPlotTest\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfExamples", "WpfExamples\WpfExamples.csproj", "{1172C612-A9ED-4B00-8BF5-AFDBB4311399}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RostopicTest", "RostopicTest\RostopicTest.csproj", "{53EE328C-9CEE-4148-9AFA-9D5828C6C8AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RostopicTest", "RostopicTest\RostopicTest.csproj", "{53EE328C-9CEE-4148-9AFA-9D5828C6C8AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicCreateTest", "DynamicCreateTest\DynamicCreateTest.csproj", "{C96686AC-104C-4650-8D11-C377B70128E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicCreateTest", "DynamicCreateTest\DynamicCreateTest.csproj", "{C96686AC-104C-4650-8D11-C377B70128E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rosbridge", "Rosbridge\Rosbridge.csproj", "{58F19C76-91BF-4D80-9027-213F34844F75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C96686AC-104C-4650-8D11-C377B70128E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C96686AC-104C-4650-8D11-C377B70128E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C96686AC-104C-4650-8D11-C377B70128E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58F19C76-91BF-4D80-9027-213F34844F75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58F19C76-91BF-4D80-9027-213F34844F75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58F19C76-91BF-4D80-9027-213F34844F75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58F19C76-91BF-4D80-9027-213F34844F75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
