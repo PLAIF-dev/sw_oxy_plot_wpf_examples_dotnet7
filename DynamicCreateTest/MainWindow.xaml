@@ -3,10 +3,92 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:DynamicCreateTest"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="500" Width="1200">
 
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GraphCtrlLib;component/mapping.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="120"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column ="0">
+            <ListView SelectedIndex="{Binding SelectedInd}">
+                <ListBoxItem>
+                    <TextBlock Text="Graph1"></TextBlock>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock Text="Graph2"></TextBlock>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock Text="Add"></TextBlock>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock Text="Delete"></TextBlock>
+                </ListBoxItem>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding ListBoxChangedCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </ListView>
+        </Grid>
+
+        <Grid Grid.Column ="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <StackPanel Orientation="Horizontal" Background="White">
+                    <Button Content="New"></Button>
+                    <Button Content="Split"></Button>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <ItemsControl ItemsSource="{Binding ViewModels}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Columns="2" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ContentControl Content="{Binding}" Margin="0,0,5,5"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="2">
+            <StackPanel Orientation="Vertical" Margin="10">
+                <Button Content="Start" Height="50" Margin="5"></Button>
+                <Button Content="Stop" Height="50" Margin="5" ></Button>
+                <Button Content="Clear" Height="50" Margin="5"></Button>
+                <Button Content="Test" Height="50" Margin="5" ></Button>
+            </StackPanel>
+        </Grid>
     </Grid>
+    
 </Window>
