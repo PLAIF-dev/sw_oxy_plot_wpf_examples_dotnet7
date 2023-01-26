@@ -21,7 +21,7 @@ namespace WpfExamples
             this.Description = description;
             try
             {
-                this.Thumbnail = new BitmapImage(new Uri("pack://application:,,,/Images/" + this.ThumbnailFileName));
+                this.Thumbnail = new BitmapImage(new Uri("Images/" + this.ThumbnailFileName, UriKind.Relative));
             }
             catch (Exception e)
             {

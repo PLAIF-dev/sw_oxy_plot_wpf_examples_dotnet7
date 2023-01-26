@@ -11,4 +11,10 @@
     <PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DynamicCreateTest\DynamicCreateTest.csproj" />
+    <ProjectReference Include="..\RostopicTest\RostopicTest.csproj" />
+    <ProjectReference Include="..\WpfExamples\WpfExamples.csproj" />
+  </ItemGroup>
+
 </Project>

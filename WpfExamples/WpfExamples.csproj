@@ -6,6 +6,7 @@
       <OutputType>WinExe</OutputType>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
     <PackageReference Include="PropertyTools.Wpf" Version="3.1.0-alpha0009" />
   </ItemGroup>
   <ItemGroup>
@@ -43,7 +44,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="ReadMe.txt" />
-    <ProjectReference Include="..\OxyPlotTest\OxyPlotTest.csproj" />
     <Resource Include="Examples\HistogramDemo\hare.jpg" />
   </ItemGroup>
 </Project>

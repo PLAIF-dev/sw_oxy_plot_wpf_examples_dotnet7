@@ -3,14 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:OxyPlotTest" xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:local="clr-namespace:OxyPlotTest"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Window.DataContext>
         <local:MainViewModel/>
     </Window.DataContext>
     <Grid>
-        <!-- The OxyPlot control is binding to a PlotModel in the MainViewModel -->
-        <oxy:PlotView x:Name="plotView" Model="{Binding Model}" MouseRightButtonDown="PlotView_MouseRightButtonDown" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <Button x:Name="officialBtn" Content="Official samples" FontSize="20" Margin="10 20 10 10" Click="officialBtn_Click"/>
+            <Button x:Name="rostopicBtn" Content="ROStopic test" FontSize="20" Margin="10" Click="rostopicBtn_Click"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+            <Button x:Name="dynamicBtn" Content="동적 그래프 생성" FontSize="20" Margin="10 20 10 10" Click="dynamicBtn_Click"/>
+            <Button Content="~~" FontSize="20" Margin="10"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -1,56 +1,164 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OxyPlotTest
+﻿namespace OxyPlotTest
 {
+    using System;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Threading;
+
     using OxyPlot;
+    using OxyPlot.Axes;
     using OxyPlot.Series;
 
-    /// <summary>
-    /// Represents the view-model for the main window.
-    /// </summary>
-    public class MainViewModel
+    public enum SimulationType
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MainViewModel" /> class.
-        /// </summary>
+        Waves,
+        TimeSimulation
+    }
+
+    public class MainViewModel : INotifyPropertyChanged, IDisposable
+    {
+        // try to change might be lower or higher than the rendering interval
+        private const int UpdateInterval = 20;
+
+        private bool disposed;
+        private readonly Timer timer;
+        private readonly Stopwatch watch = new Stopwatch();
+        private int numberOfSeries;
+        private SimulationType simulationType;
+
         public MainViewModel()
         {
-            // Create the plot model
-            var tmp = new PlotModel { Title = "Simple example", Subtitle = "using OxyPlot" };
-
-            // Create two line series (markers are hidden by default)
-            var series1 = new LineSeries { Title = "Series 1", MarkerType = MarkerType.Circle };
-            series1.Points.Add(new DataPoint(0, 0));
-            series1.Points.Add(new DataPoint(10, 18));
-            series1.Points.Add(new DataPoint(20, 12));
-            series1.Points.Add(new DataPoint(30, 8));
-            series1.Points.Add(new DataPoint(40, 15));
-
-            var series2 = new LineSeries { Title = "Series 2", MarkerType = MarkerType.Square };
-            series2.Points.Add(new DataPoint(0, 4));
-            series2.Points.Add(new DataPoint(10, 12));
-            series2.Points.Add(new DataPoint(20, 16));
-            series2.Points.Add(new DataPoint(30, 25));
-            series2.Points.Add(new DataPoint(40, 5));
-
-
-            // Add the series to the plot model
-            tmp.Series.Add(series1);
-            tmp.Series.Add(series2);
-
-            // Axes are created automatically if they are not defined
-
-            // Set the Model property, the INotifyPropertyChanged event will make the WPF Plot control update its content
-            this.Model = tmp;
+            this.timer = new Timer(OnTimerElapsed);
+            this.Function = (t, x, a) => Math.Cos(t * a) * (x == 0 ? 1 : Math.Sin(x * a) / x);
+            this.SimulationType = SimulationType.TimeSimulation;
         }
 
-        /// <summary>
-        /// Gets the plot model.
-        /// </summary>
-        public PlotModel Model { get; private set; }
+        public SimulationType SimulationType
+        {
+            get
+            {
+                return this.simulationType;
+            }
+
+            set
+            {
+                this.simulationType = value;
+                this.RaisePropertyChanged("SimulationType");
+                this.SetupModel();
+            }
+        }
+
+        private void SetupModel()
+        {
+            this.timer.Change(Timeout.Infinite, Timeout.Infinite);
+
+            PlotModel = new PlotModel();
+            PlotModel.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Minimum = -2, Maximum = 2 });
+
+            this.numberOfSeries = this.SimulationType == SimulationType.TimeSimulation ? 10 : 20;
+
+            for (int i = 0; i < this.numberOfSeries; i++)
+            {
+                PlotModel.Series.Add(new LineSeries { LineStyle = LineStyle.Solid });
+            }
+
+            this.watch.Start();
+
+            this.RaisePropertyChanged("PlotModel");
+
+            this.timer.Change(1000, UpdateInterval);
+        }
+
+        public int TotalNumberOfPoints { get; private set; }
+
+        private Func<double, double, double, double> Function { get; set; }
+
+        public PlotModel PlotModel { get; private set; }
+
+        private void OnTimerElapsed(object state)
+        {
+            lock (this.PlotModel.SyncRoot)
+            {
+                this.Update();
+            }
+
+            this.PlotModel.InvalidatePlot(true);
+        }
+
+        private void Update()
+        {
+            double t = this.watch.ElapsedMilliseconds * 0.001;
+            int n = 0;
+
+            for (int i = 0; i < PlotModel.Series.Count; i++)
+            {
+                var s = (LineSeries)PlotModel.Series[i];
+
+                switch (SimulationType)
+                {
+                    case SimulationType.TimeSimulation:
+                        {
+                            double x = s.Points.Count > 0 ? s.Points[s.Points.Count - 1].X + 1 : 0;
+                            if (s.Points.Count >= 200)
+                                s.Points.RemoveAt(0);
+                            double y = 0;
+                            int m = 80;
+                            for (int j = 0; j < m; j++)
+                                y += Math.Cos(0.001 * x * j * j + i*10);
+                            y /= m;
+                            s.Points.Add(new DataPoint(x, y));
+                            break;
+                        }
+
+                    case SimulationType.Waves:
+                        s.Points.Clear();
+                        double a = 0.5 + i * 0.05;
+                        for (double x = -5; x <= 5; x += 0.01)
+                        {
+                            s.Points.Add(new DataPoint(x, Function(t, x, a)));
+                        }
+
+                        break;
+                }
+
+                n += s.Points.Count;
+            }
+
+            if (this.TotalNumberOfPoints != n)
+            {
+                this.TotalNumberOfPoints = n;
+                this.RaisePropertyChanged("TotalNumberOfPoints");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void RaisePropertyChanged(string property)
+        {
+            var handler = this.PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(property));
+            }
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.timer.Dispose();
+                }
+            }
+
+            this.disposed = true;
+        }
     }
 }

@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace OxyPlotTest
 {
@@ -25,9 +13,22 @@ namespace OxyPlotTest
             InitializeComponent();
         }
 
-        private void PlotView_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        private void officialBtn_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("right button down!!");
+            WpfExamples.MainWindow window = new();
+            window.Show();
+        }
+
+        private void dynamicBtn_Click(object sender, RoutedEventArgs e)
+        {
+            DynamicCreateTest.MainWindow window = new();
+            window.Show();
+        }
+
+        private void rostopicBtn_Click(object sender, RoutedEventArgs e)
+        {
+            RostopicTest.MainWindow window = new();
+            window.Show();
         }
     }
 }
