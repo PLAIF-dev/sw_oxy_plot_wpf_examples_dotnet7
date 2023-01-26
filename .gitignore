@@ -4,3 +4,12 @@
 /WpfExamples/obj
 /WpfExamples/bin
 /OxyPlotTest/*.user
+/RealtimeTest/RealtimeTest.csproj.user
+/RealtimeTest/bin
+/RealtimeTest/obj
+/RostopicTest/RostopicTest.csproj.user
+/RostopicTest/bin
+/RostopicTest/obj
+/DynamicCreateTest/obj
+/DynamicCreateTest/DynamicCreateTest.csproj.user
+/DynamicCreateTest/bin
