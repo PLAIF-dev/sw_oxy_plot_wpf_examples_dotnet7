@@ -123,43 +123,39 @@ namespace RostopicTest
 
         public void _subscriber_MessageReceived(object sender, MessageReceivedEventArgs e)
         {
-            switch (e.Message["topic"]!.ToString())
+            var topic = e.Message["topic"];
+            var msg = e.Message["msg"];
+
+            if (topic is null || msg is null)
+                return;
+
+            switch (topic.ToString())
             {
                 case "/joint_states":
-                    var msg = e.Message["msg"]!;
-                    var pos = msg!["position"]!;
+                    var pos = msg["position"]!;
                     var sec = Int32.Parse(msg["header"]!["stamp"]!["secs"]!.ToString());
                     var nsec = Int32.Parse(msg["header"]!["stamp"]!["nsecs"]!.ToString());
                     var seq = Int32.Parse(msg["header"]!["seq"]!.ToString());
-                    var pos1 = Double.Parse(pos[0]!.ToString());
-                    var pos2 = Double.Parse(pos[1]!.ToString());
-                    var pos3 = Double.Parse(pos[2]!.ToString());
-                    var pos4 = Double.Parse(pos[3]!.ToString());
-                    var pos5 = Double.Parse(pos[4]!.ToString());
-                    var pos6 = Double.Parse(pos[5]!.ToString());
-
-                    //((LineSeries)PlotModel.Series[0]).Points.Add(new DataPoint(x, y));
-                    //((LineSeries)PlotModel.Series[1]).Points.Add(new DataPoint(x, y*y/10));
-
-                    double time = sec + nsec*0.00000001;
-
-                    if (isChecked1) ((LineSeries)PlotModel.Series[0]).Points.Add(new DataPoint(nsec, pos1));
-                    if (isChecked2) ((LineSeries)PlotModel.Series[1]).Points.Add(new DataPoint(nsec, pos2));
-                    if (isChecked3) ((LineSeries)PlotModel.Series[2]).Points.Add(new DataPoint(nsec, pos3));
-                    if (isChecked4) ((LineSeries)PlotModel.Series[3]).Points.Add(new DataPoint(nsec, pos4));
-                    if (isChecked5) ((LineSeries)PlotModel.Series[4]).Points.Add(new DataPoint(nsec, pos5));
-                    if (isChecked6) ((LineSeries)PlotModel.Series[5]).Points.Add(new DataPoint(nsec, pos6));
-
-                    for(int i=0; i<6; i++)
+                    double[] positions = new double[6];
+                    for (int i = 0; i < 6; i++)
                     {
-                        if (((LineSeries)PlotModel.Series[i]).Points.Count > 1000)
-                            ((LineSeries)PlotModel.Series[i]).Points.RemoveAt(0);
+                        positions[i] = Double.Parse(pos[i]!.ToString());
                     }
-                    
-                    x++;
-                    y++;
-                    // 매번 업데이트 하려니 너무 빡세다. 그냥 타이머로 invalidate 하자
-                    //PlotModel.InvalidatePlot(true);
+                    double time = sec + nsec * 0.000000001;
+
+                    bool[] isChecked = { IsChecked1, IsChecked2, IsChecked3, IsChecked4, IsChecked5, IsChecked6 };
+                    for (int i = 0; i < 6; i++)
+                    {
+                        if (isChecked[i])
+                            continue;
+
+                        var series = PlotModel.Series[i] as LineSeries;
+                        series?.Points.Add(new DataPoint(time, positions[i]));
+                        if (series?.Points.Count > 1000)
+                        {
+                            series.Points.RemoveAt(0);
+                        }
+                    }
                     break;
             }
         }
