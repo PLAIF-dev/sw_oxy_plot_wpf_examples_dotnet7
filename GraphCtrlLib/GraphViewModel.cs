@@ -54,28 +54,31 @@ namespace GraphCtrlLib
             }
         }
 
-        private List<OxyPlot.Series.LineSeries> listSeries;
+        private string name;
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        private Dictionary<string, LineSeries> dicLineGraph = new Dictionary<string, LineSeries>();
+
+        //private List<OxyPlot.Series.LineSeries> listSeries;
 
 
         //public OxyPlot.Series.LineSeries LineSeries = new OxyPlot.Series.LineSeries();
         //public OxyPlot.Series.ScatterSeries ScatterSeries = new OxyPlot.Series.ScatterSeries();
 
-        public GraphViewModel() 
+        public GraphViewModel(string strGraphTitle = "Graph") 
         {
             model = new PlotModel();
             controller = new PlotController();
-            listSeries = new List<OxyPlot.Series.LineSeries>();
 
-            InitGraph();
-        }
+            name= strGraphTitle;
+            model.Title = name;
 
-        public GraphViewModel(string strGraphTitle)
-        {
-            model = new PlotModel();
-            controller = new PlotController();
-            listSeries = new List<OxyPlot.Series.LineSeries>();
-
-            InitGraph();
+            //InitGraph();
         }
 
         ~GraphViewModel() 
@@ -85,18 +88,14 @@ namespace GraphCtrlLib
 
         #region Init
 
-
-
         public void InitGraph()
         {
             #region Axis
 
-            AddAxis("Time", false, AxisPosition.Bottom);
-            AddAxis("Value", false, AxisPosition.Left);
+            AddAxis("Time", AxisPosition.Bottom);
+            AddAxis("Value", AxisPosition.Left);
 
             #endregion
-
-            Model.Title = "OxyPlot";
 
             #region Lengend
 
@@ -105,15 +104,42 @@ namespace GraphCtrlLib
             #endregion
 
             //Design 변경 시도
-            //Model.Background = OxyColor.FromRgb(0,0,0);
-            //Model.PlotAreaBorderColor = OxyColor.FromRgb(128,128,128);
+            //Model.Background = OxyColor.FromRgb(0, 0, 0);
+            //Model.PlotAreaBorderColor = OxyColor.FromRgb(128, 128, 128);
             //Model.TextColor = OxyColor.FromRgb(128, 128, 128);
+
             #region Line Setting
             AddLine("LineA");
             AddLine("LineB");
             #endregion
 
-            Model.InvalidatePlot(true);
+            ReDraw();
+        }
+        #endregion
+
+        #region Example
+        public void ExampleCode()
+        {
+            var graph = new GraphViewModel("Test");
+
+            graph.AddAxis("X", AxisPosition.Bottom);
+            graph.AddAxis("Y", AxisPosition.Left);
+
+            graph.AddLine("LineA", OxyColors.SkyBlue, 2);
+            graph.AddLine("LineB", OxyColors.SeaShell, 2);
+            graph.AddLine("LineC", OxyColors.AliceBlue, 2);
+            graph.AddLine("LineD", OxyColors.DeepSkyBlue, 2);
+
+            double[] dataX = new double[1000];
+            double[] dataY = new double[1000];
+
+            // Graph Name으로 Data 추가
+            graph.AddData("LineA", 1, 1);
+            graph.AddData("LineB", dataX, dataY);
+
+            // Index로 Data 추가
+            graph.AddData(2, dataX, dataY);
+            graph.AddData(3, dataX, dataY);
         }
         #endregion
 
@@ -122,57 +148,31 @@ namespace GraphCtrlLib
         {
             //listSeries.Clear();
 
-            foreach(LineSeries ls in listSeries)
+            foreach(LineSeries ls in dicLineGraph.Values)
             {
                 ls.Points.Clear();
             }
 
-            Model.InvalidatePlot(true);
+            ReDraw();
         }
         #endregion
 
         #region Funtion
 
-        private void AddLine(string strLineTitle)
+        public void AddLine(string strLineTitle, OxyColor color, int LineThickness = 2)
         {
             LineSeries ls = new LineSeries();
-            listSeries.Add(ls);
+            dicLineGraph.Add(strLineTitle, ls);
 
             //Line 설정
             ls.Title = strLineTitle;
             //LineSeries.InterpolationAlgorithm = InterpolationAlgorithms.UniformCatmullRomSpline;
             //ls.Color = OxyColor.FromAColor(200, OxyColors.Automatic);
-            ls.StrokeThickness = 2;
+            ls.Color = color;
+            ls.StrokeThickness = LineThickness;
             ls.CanTrackerInterpolatePoints = false;
 
             Model.Series.Add(ls);
-        }
-
-        private void AddLine(int LineCount)
-        {
-            if(LineCount > 0)
-            {
-                for(int i = 0; i < LineCount; i++)
-                {
-                    listSeries.Add(new OxyPlot.Series.LineSeries());
-                }
-            }
-            else
-            {
-                listSeries.Add(new OxyPlot.Series.LineSeries());
-            }
-
-            foreach(LineSeries ls in listSeries)
-            {
-                //Line 설정
-                ls.Title = "LineA";
-                //LineSeries.InterpolationAlgorithm = InterpolationAlgorithms.UniformCatmullRomSpline;
-                ls.Color = OxyColor.FromAColor(200, OxyColors.SkyBlue);
-                ls.StrokeThickness = 2;
-                ls.CanTrackerInterpolatePoints = false;
-
-                Model.Series.Add(ls);
-            }
 
             //Marker 설정
             //LineSeries.MarkerFill = OxyColor.FromAColor(200, OxyColors.SkyBlue);
@@ -184,10 +184,15 @@ namespace GraphCtrlLib
             //ScatterSeries.MarkerType = MarkerType.Circle;
             //ScatterSeries.MarkerStrokeThickness = 0;
             //ScatterSeries.BinSize= 2;
-            //Model.Series.Add(ScatterSeries);        
+            //Model.Series.Add(ScatterSeries);   
         }
 
-        private void AddAxis(string strTitle, bool _PositionAtZeroCrossing = false, OxyPlot.Axes.AxisPosition position = AxisPosition.None)
+        public void AddLine(string strLineTitle, int LineThickness = 2)
+        {
+            AddLine(strLineTitle, OxyColors.Automatic, LineThickness);
+        }
+
+        public void AddAxis(string strTitle, OxyPlot.Axes.AxisPosition position = AxisPosition.None, bool _PositionAtZeroCrossing = false)
         {
             LinearAxis Axis = new OxyPlot.Axes.LinearAxis()
             {
@@ -205,7 +210,7 @@ namespace GraphCtrlLib
             Model.Axes.Add(Axis);
         }
 
-        private void AddLegend(string strLegendTitle)
+        public void AddLegend(string strLegendTitle)
         {
             Legend legend = new Legend();
             legend.LegendTitle = strLegendTitle;
@@ -218,97 +223,125 @@ namespace GraphCtrlLib
             Model.Legends.Add(legend);
         }
 
+        public void ReDraw()
+        {
+            Model.InvalidatePlot(true);
+        }
+
         #endregion
 
         #region Data
 
         //New Line
-        public void AddSeries(double data1, double data2)
-        {      
-            LineSeries lineSeries = new LineSeries();
-            listSeries.Add(lineSeries);
 
-            lineSeries.Points.Add(new DataPoint(data1, data2));
-            //ScatterSeries.Points.Add(new OxyPlot.Series.ScatterPoint(nVal, dSin));
-
-            Model.InvalidatePlot(true);
+        private void AddData(LineSeries ls, double data1, double data2)
+        {
+            ls.Points.Add(new DataPoint(data1, data2));
         }
 
-        public void AddSeries(double[] data1, double[] data2)
+        private void AddData(LineSeries ls, double[] data1, double[] data2)
         {
-            LineSeries lineSeries = new LineSeries();
-            listSeries.Add(lineSeries);
-
             //data1과 data2의 크기 확인
-            for(int i = 0; i < data1.Count(); i++)
+            for (int i = 0; i < data1.Count(); i++)
             {
-                lineSeries.Points.Add(new DataPoint(data1[i], data2[i]));
-            }         
-            //ScatterSeries.Points.Add(new OxyPlot.Series.ScatterPoint(nVal, dSin));
-
-            Model.InvalidatePlot(true);
+                AddData(ls, data1[i], data2[i]);
+            }
         }
 
-        //Append
-        public void AppendSeries(int idx, double data1, double data2)
+        public void AddData(int idx, double data1, double data2)
         {
-            if(listSeries.Count > 0 && listSeries.Count > idx)
+            LineSeries? ls = new LineSeries();
+
+            if(dicLineGraph.Count > 0 && dicLineGraph.Count >= idx + 1)
             {
-                LineSeries lineSeries = listSeries[idx];
-
-                lineSeries.Points.Add(new DataPoint(data1, data2));
-                //ScatterSeries.Points.Add(new OxyPlot.Series.ScatterPoint(nVal, dSin));
-
-                Model.InvalidatePlot(true);
-            }
-            else if(listSeries.Count <= 0)
-            {
-                LineSeries lineSeries = new LineSeries();
-
-                lineSeries.Points.Add(new DataPoint(data1, data2));
-                
-                listSeries.Add(lineSeries);
-
-                Model.InvalidatePlot(true);
+                ls = dicLineGraph.Values.ToList()[idx];
+                AddData(ls, data1, data2);
             }
             else
             {
-                throw new Exception("올바르지 않은 graph idx");
+                throw new Exception("올바르지 않은 Index");
             }
+
+            ReDraw();
         }
-        public void AppendSeries(int idx, double[] data1, double[] data2)
+
+        public void AddData(int idx, double[] data1, double[] data2)
         {
-            if (listSeries.Count > 0 && listSeries.Count > idx)
+            LineSeries? ls = new LineSeries();
+
+            if (dicLineGraph.Count > 0 && dicLineGraph.Count >= idx + 1)
             {
-                LineSeries lineSeries = listSeries[idx];
-
-                //data1과 data2의 크기 확인
-                for (int i = 0; i < data1.Count(); i++)
-                {
-                    lineSeries.Points.Add(new DataPoint(data1[i], data2[i]));
-                }
-
-                //ScatterSeries.Points.Add(new OxyPlot.Series.ScatterPoint(nVal, dSin));
-
-                Model.InvalidatePlot(true);
-            }
-            else if (listSeries.Count <= 0)
-            {
-                LineSeries lineSeries = new LineSeries();
-
-                for (int i = 0; i < data1.Count(); i++)
-                {
-                    lineSeries.Points.Add(new DataPoint(data1[i], data2[i]));
-                }
-
-                listSeries.Add(lineSeries);
-
-                Model.InvalidatePlot(true);
+                ls = dicLineGraph.Values.ToList()[idx];
+                AddData(ls, data1, data2);
             }
             else
             {
-                throw new Exception("올바르지 않은 graph idx");
+                throw new Exception("올바르지 않은 Index");
             }
+
+            ReDraw();
+        }
+
+        public void AddData(int idx, List<double> data1, List<double> data2)
+        {
+            LineSeries? ls = new LineSeries();
+
+            if (dicLineGraph.Count > 0 && dicLineGraph.Count >= idx + 1)
+            {
+                ls = dicLineGraph.Values.ToList()[idx];
+                AddData(ls, data1.ToArray(), data2.ToArray());
+            }
+            else
+            {
+                throw new Exception("올바르지 않은 Index");
+            }
+
+            ReDraw();
+        }
+
+        public void AddData(string strLineName, double data1, double data2)
+        {
+            LineSeries? ls = new LineSeries();
+            if(dicLineGraph.TryGetValue(strLineName, out ls))
+            {
+                AddData(ls, data1, data2);
+            }
+            else
+            {
+                throw new Exception("올바르지 않은 LineName");
+            }
+
+            ReDraw();
+        }
+
+        public void AddData(string strLineName, double[] data1, double[] data2)
+        {
+            LineSeries? ls = new LineSeries();
+            if (dicLineGraph.TryGetValue(strLineName, out ls))
+            {
+                AddData(ls, data1, data2);
+            }
+            else
+            {
+                throw new Exception("올바르지 않은 LineName");
+            }
+
+            ReDraw();
+        }
+
+        public void AddData(string strLineName, List<double> data1, List<double> data2)
+        {
+            LineSeries? ls = new LineSeries();
+            if (dicLineGraph.TryGetValue(strLineName, out ls))
+            {
+                AddData(ls, data1.ToArray(), data2.ToArray());
+            }
+            else
+            {
+                throw new Exception("올바르지 않은 LineName");
+            }
+
+            ReDraw();
         }
 
         #endregion

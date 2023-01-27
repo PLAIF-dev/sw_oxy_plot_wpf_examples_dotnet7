@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using GraphCtrlLib;
+using OxyPlot.Axes;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -129,10 +130,9 @@ namespace DynamicCreateTest
 
                 foreach (GraphViewModel _graph in _viewModels)
                 {
-                    _graph.AppendSeries(0, xData, yData);
-                    _graph.AppendSeries(1, xData2, yData2);
+                    _graph.AddData(0, xData, yData);
+                    _graph.AddData(1, xData2, yData2);
                 }
-
             }     
         }
     }
