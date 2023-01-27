@@ -11,6 +11,27 @@
         <local:MainViewModel/>
     </Window.DataContext>
     <Grid>
-        <oxy:PlotView x:Name="plot1" Model="{Binding PlotModel}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Border BorderBrush="Black" BorderThickness="1">
+                <StackPanel Margin="10">
+                    <CheckBox x:Name="pos1Chk" Content="pos1" IsChecked="{Binding IsChecked1}" Command="{Binding CmdClickChk1}"/>
+                    <CheckBox x:Name="pos2Chk" Content="pos2" IsChecked="{Binding IsChecked2}" Command="{Binding CmdClickChk2}"/>
+                    <CheckBox x:Name="pos3Chk" Content="pos3" IsChecked="{Binding IsChecked3}" Command="{Binding CmdClickChk3}"/>
+                    <CheckBox x:Name="pos4Chk" Content="pos4" IsChecked="{Binding IsChecked4}" Command="{Binding CmdClickChk4}"/>
+                    <CheckBox x:Name="pos5Chk" Content="pos5" IsChecked="{Binding IsChecked5}" Command="{Binding CmdClickChk5}"/>
+                    <CheckBox x:Name="pos6Chk" Content="pos6" IsChecked="{Binding IsChecked6}" Command="{Binding CmdClickChk6}"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Border BorderBrush="Black" BorderThickness="1">
+                <oxy:PlotView x:Name="plot1" Model="{Binding PlotModel}"/>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
