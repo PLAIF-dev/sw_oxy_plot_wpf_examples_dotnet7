@@ -69,90 +69,49 @@ namespace GraphCtrlLib
             InitGraph();
         }
 
+        public GraphViewModel(string strGraphTitle)
+        {
+            model = new PlotModel();
+            controller = new PlotController();
+            listSeries = new List<OxyPlot.Series.LineSeries>();
+
+            InitGraph();
+        }
+
         ~GraphViewModel() 
         {
 
         }
 
         #region Init
+
+
+
         public void InitGraph()
         {
-            LinearAxis AxisX = new OxyPlot.Axes.LinearAxis()
-            {
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dot,
+            #region Axis
 
-                IntervalLength = 80,
-                Title = "Time",
+            AddAxis("Time", false, AxisPosition.Bottom);
+            AddAxis("Value", false, AxisPosition.Left);
 
-                //PositionAtZeroCrossing = true,
-            };
-            LinearAxis AxisY = new OxyPlot.Axes.LinearAxis()
-            {
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dot,
-
-                Title = "Value",
-
-                //PositionAtZeroCrossing = true,
-            };
-
-            AxisX.Position = OxyPlot.Axes.AxisPosition.Bottom;
-            AxisY.Position = OxyPlot.Axes.AxisPosition.Left;
-
-            //Controller
-            //Controller.BindMouseEnter(PlotCommands.HoverPointsOnlyTrack);
-            //Controller.BindMouseDown(OxyMouseButton.Left, OxyModifierKeys.None, null);
-
-            //AxisX.MajorStep = 1;
-            //AxisX.MajorTickSize = 10;
-            //AxisX.TickStyle = OxyPlot.Axes.TickStyle.Crossing;
-            //AxisX.MinorStep = 0.5;
-            //AxisX.Maximum = 10;
-            //AxisY.Minimum= 0;
+            #endregion
 
             Model.Title = "OxyPlot";
-            Model.Axes.Add(AxisX);
-            Model.Axes.Add(AxisY);
 
-            Legend legend = new Legend();
-            legend.LegendTitle = "Legend";
-            legend.LegendOrientation = LegendOrientation.Horizontal;
-            legend.LegendPlacement = LegendPlacement.Inside;
-            legend.LegendPosition = LegendPosition.RightTop;
-            legend.LegendBackground = OxyColor.FromAColor(200, OxyColors.White);
-            legend.LegendBorder = OxyColors.Black;
+            #region Lengend
 
-            Model.Legends.Add(legend);
+            AddLegend("Legend");
+
+            #endregion
 
             //Design 변경 시도
             //Model.Background = OxyColor.FromRgb(0,0,0);
             //Model.PlotAreaBorderColor = OxyColor.FromRgb(128,128,128);
             //Model.TextColor = OxyColor.FromRgb(128, 128, 128);
-
-            OxyPlot.Series.LineSeries lineSeries = new OxyPlot.Series.LineSeries();
-            listSeries.Add(lineSeries);
-
-            //Line 설정
-            lineSeries.Title = "LineA";
-            //LineSeries.InterpolationAlgorithm = InterpolationAlgorithms.UniformCatmullRomSpline;
-            lineSeries.Color = OxyColor.FromAColor(200, OxyColors.SkyBlue);
-            lineSeries.StrokeThickness = 2;
-            lineSeries.CanTrackerInterpolatePoints = false;
-
-            //Marker 설정
-            //LineSeries.MarkerFill = OxyColor.FromAColor(200, OxyColors.SkyBlue);
-            //LineSeries.MarkerSize= 3;
-            //LineSeries.MarkerStrokeThickness = 2;
-            //LineSeries.MarkerType = MarkerType.Circle;
-
-            Model.Series.Add(lineSeries);
-
-            //ScatterSeries.Title = "Scatter";
-            //ScatterSeries.MarkerType = MarkerType.Circle;
-            //ScatterSeries.MarkerStrokeThickness = 0;
-            //ScatterSeries.BinSize= 2;
-            //Model.Series.Add(ScatterSeries);
+            #region Line Setting
+            AddLine("LineA");
+            AddLine("LineB");
+            #endregion
 
             Model.InvalidatePlot(true);
         }
@@ -173,6 +132,91 @@ namespace GraphCtrlLib
         #endregion
 
         #region Funtion
+
+        private void AddLine(string strLineTitle)
+        {
+            LineSeries ls = new LineSeries();
+            listSeries.Add(ls);
+
+            //Line 설정
+            ls.Title = strLineTitle;
+            //LineSeries.InterpolationAlgorithm = InterpolationAlgorithms.UniformCatmullRomSpline;
+            //ls.Color = OxyColor.FromAColor(200, OxyColors.Automatic);
+            ls.StrokeThickness = 2;
+            ls.CanTrackerInterpolatePoints = false;
+
+            Model.Series.Add(ls);
+        }
+
+        private void AddLine(int LineCount)
+        {
+            if(LineCount > 0)
+            {
+                for(int i = 0; i < LineCount; i++)
+                {
+                    listSeries.Add(new OxyPlot.Series.LineSeries());
+                }
+            }
+            else
+            {
+                listSeries.Add(new OxyPlot.Series.LineSeries());
+            }
+
+            foreach(LineSeries ls in listSeries)
+            {
+                //Line 설정
+                ls.Title = "LineA";
+                //LineSeries.InterpolationAlgorithm = InterpolationAlgorithms.UniformCatmullRomSpline;
+                ls.Color = OxyColor.FromAColor(200, OxyColors.SkyBlue);
+                ls.StrokeThickness = 2;
+                ls.CanTrackerInterpolatePoints = false;
+
+                Model.Series.Add(ls);
+            }
+
+            //Marker 설정
+            //LineSeries.MarkerFill = OxyColor.FromAColor(200, OxyColors.SkyBlue);
+            //LineSeries.MarkerSize= 3;
+            //LineSeries.MarkerStrokeThickness = 2;
+            //LineSeries.MarkerType = MarkerType.Circle;
+
+            //ScatterSeries.Title = "Scatter";
+            //ScatterSeries.MarkerType = MarkerType.Circle;
+            //ScatterSeries.MarkerStrokeThickness = 0;
+            //ScatterSeries.BinSize= 2;
+            //Model.Series.Add(ScatterSeries);        
+        }
+
+        private void AddAxis(string strTitle, bool _PositionAtZeroCrossing = false, OxyPlot.Axes.AxisPosition position = AxisPosition.None)
+        {
+            LinearAxis Axis = new OxyPlot.Axes.LinearAxis()
+            {
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+
+                IntervalLength = 80,
+                Title = strTitle,
+
+                PositionAtZeroCrossing = _PositionAtZeroCrossing,
+            };
+
+            Axis.Position = position;
+
+            Model.Axes.Add(Axis);
+        }
+
+        private void AddLegend(string strLegendTitle)
+        {
+            Legend legend = new Legend();
+            legend.LegendTitle = strLegendTitle;
+            legend.LegendOrientation = LegendOrientation.Horizontal;
+            legend.LegendPlacement = LegendPlacement.Inside;
+            legend.LegendPosition = LegendPosition.RightTop;
+            legend.LegendBackground = OxyColor.FromAColor(200, OxyColors.White);
+            legend.LegendBorder = OxyColors.Black;
+
+            Model.Legends.Add(legend);
+        }
 
         #endregion
 

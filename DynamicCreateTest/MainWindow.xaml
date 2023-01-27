@@ -35,13 +35,7 @@
                 <ListBoxItem>
                     <TextBlock Text="Graph2"></TextBlock>
                 </ListBoxItem>
-                <ListBoxItem>
-                    <TextBlock Text="Add"></TextBlock>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <TextBlock Text="Delete"></TextBlock>
-                </ListBoxItem>
-
+ 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding ListBoxChangedCommand}" />
@@ -59,8 +53,8 @@
 
             <Grid Grid.Row="0">
                 <StackPanel Orientation="Horizontal" Background="White">
-                    <Button Content="New"></Button>
-                    <Button Content="Split"></Button>
+                    <Button Content="New" Command="{Binding BtnNewClickCommand}"></Button>
+                    <Button Content="Delete" Command="{Binding BtnDeleteClickCommand}"></Button>
                 </StackPanel>
             </Grid>
 
@@ -68,7 +62,8 @@
                 <ItemsControl ItemsSource="{Binding ViewModels}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid Columns="2" />
+                            <UniformGrid>
+                            </UniformGrid>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
