@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GraphCtrlLib;
 
 namespace DynamicCreateTest
 {
@@ -23,6 +24,18 @@ namespace DynamicCreateTest
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ListView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //if(sender is ListBoxItem listBox && listBox.Content is GraphModel.GraphDataSet graphDataSet)
+            ListView item = new ListView();
+            item = sender as ListView;
+
+            GraphModel.GraphDataSet graphDataSet = (GraphModel.GraphDataSet)item.SelectedValue;
+            {
+                DragDrop.DoDragDrop(item, graphDataSet, DragDropEffects.Copy);
+            }
         }
     }
 }

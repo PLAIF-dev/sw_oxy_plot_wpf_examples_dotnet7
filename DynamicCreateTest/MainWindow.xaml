@@ -28,13 +28,18 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column ="0">
-            <ListView SelectedIndex="{Binding SelectedInd}">
-                <ListBoxItem>
-                    <TextBlock Text="Graph1"></TextBlock>
-                </ListBoxItem>
-                <ListBoxItem>
+            <ListView SelectedIndex="{Binding SelectedInd}" ItemsSource="{Binding GraphDataSets}" PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Id}"></TextBlock>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+               
+                <!--<ListBoxItem>
                     <TextBlock Text="Graph2"></TextBlock>
-                </ListBoxItem>
+                </ListBoxItem>-->
  
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">

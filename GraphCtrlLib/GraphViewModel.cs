@@ -1,4 +1,5 @@
-﻿using OxyPlot;
+﻿using CommunityToolkit.Mvvm.Input;
+using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
@@ -9,6 +10,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 namespace GraphCtrlLib
 {
@@ -70,6 +73,10 @@ namespace GraphCtrlLib
         //public OxyPlot.Series.LineSeries LineSeries = new OxyPlot.Series.LineSeries();
         //public OxyPlot.Series.ScatterSeries ScatterSeries = new OxyPlot.Series.ScatterSeries();
 
+        public ICommand PlotDrop { get; set; }
+
+        public ICommand PlotDragOver { get; set; }
+
         public GraphViewModel(string strGraphTitle = "Graph") 
         {
             model = new PlotModel();
@@ -78,7 +85,21 @@ namespace GraphCtrlLib
             name= strGraphTitle;
             model.Title = name;
 
-            //InitGraph();
+            PlotDrop = new RelayCommand<DragEventArgs>(PlotView_Drop);
+
+            InitGraph();
+        }
+
+        private void PlotView_Drop(DragEventArgs e)
+        {
+            if (e.Data.GetData(typeof(GraphModel.GraphDataSet)) is GraphModel.GraphDataSet graphDataSet)
+            {
+                //Point position = e.GetPosition(graph);
+                //AddDataToGraph(graphDataSet, position);
+
+                AddData(graphDataSet.Id, graphDataSet.xData, graphDataSet.yData);
+                ReDraw();
+            }
         }
 
         ~GraphViewModel() 
