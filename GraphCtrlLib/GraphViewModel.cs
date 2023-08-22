@@ -123,7 +123,7 @@ namespace GraphCtrlLib
             AddAxis("Time", AxisPosition.Bottom);
 
             model.Axes[0].Minimum = 0;
-            model.Axes[0].Maximum = 100;
+            model.Axes[0].Maximum = 5000;
 
             AddAxis("Value", AxisPosition.Left);
 
@@ -277,7 +277,7 @@ namespace GraphCtrlLib
             ls.Points.Add(new DataPoint(data1, data2));
 
             model.Axes[0].Minimum = ls.Points[0].X;
-            model.Axes[0].Maximum = 100 + ls.Points[0].X;
+            model.Axes[0].Maximum = 5000 + ls.Points[0].X;
         }
 
         private void AddData(LineSeries ls, double[] data1, double[] data2)

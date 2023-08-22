@@ -74,6 +74,9 @@ namespace DynamicCreateTest
         private DispatcherTimer timer;
         #endregion
 
+
+        public const double MaxGraphNum = 5000;
+
         public MainWindowViewModel()
         {
             //this.ContentView = (object)new GraphCtrlLib.GraphViewModel();
@@ -91,7 +94,7 @@ namespace DynamicCreateTest
             List<double> xData2 = new List<double>();
             List<double> yData2 = new List<double>();
 
-            for (float i = 0; i < 1000; i += 0.1f)
+            for (float i = 0; i < MaxGraphNum; i += 0.1f)
             {
                 xData.Add(Math.Sin(i));
                 yData.Add(Math.Cos(i));
@@ -138,19 +141,19 @@ namespace DynamicCreateTest
 
             foreach (GraphViewModel _graph in _viewModels)
             {
-                if(_graph.GetCount(0) > 1000)
-                {
-                    _graph.RemoveAtFirst(0);
-                }
+                //if(_graph.GetCount(0) > 1000)
+                //{
+                //    _graph.RemoveAtFirst(0);
+                //}
                 _graph.AddData(0, xData, yData);
             }
 
             count+=0.1;
 
-            if(count > 1000)
-            {
-                count= 0;
-            }
+            //if(count > 1000)
+            //{
+            //    count= 0;
+            //}
         }
 
         private void BtnStartCommand()
@@ -200,7 +203,7 @@ namespace DynamicCreateTest
         {
             if (_viewModels != null)
             {
-                if(_viewModels.Count < 4)
+                if(_viewModels.Count < 8)
                 {
                     _viewModels.Add(new GraphViewModel());
                 }
@@ -214,11 +217,11 @@ namespace DynamicCreateTest
 
         private void ListBoxSeletedChanged()
         {
-            double[] xData = new double[1000];
-            double[] yData = new double[1000];
+            double[] xData = new double[Convert.ToInt32(MaxGraphNum)];
+            double[] yData = new double[Convert.ToInt32(MaxGraphNum)];
 
-            double[] xData2 = new double[1000];
-            double[] yData2 = new double[1000];
+            double[] xData2 = new double[Convert.ToInt32(MaxGraphNum)];
+            double[] yData2 = new double[Convert.ToInt32(MaxGraphNum)];
 
             if (_viewModels.Count > 0)
             {
@@ -230,23 +233,23 @@ namespace DynamicCreateTest
                 switch (SelectedInd)
                 {
                     case 0:
-                        for (int i = 0; i < 1000; i++)
+                        for (int i = 0; i < MaxGraphNum; i++)
                         {
-                            xData[i] = Math.Sin(i);
-                            yData[i] = Math.Cos(i);
+                            xData[i] = Math.Sin(i * 0.1f);
+                            yData[i] = Math.Cos(i * 0.1f);
 
-                            xData2[i] = Math.Sin(i) * 2;
-                            yData2[i] = Math.Cos(i) * 2;
+                            xData2[i] = Math.Sin(i * 0.1f) * 2;
+                            yData2[i] = Math.Cos(i * 0.1f) * 2;
                         }
                         break;
                     case 1:
-                        for (int i = 0; i < 1000; i++)
+                        for (int i = 0; i < MaxGraphNum; i++)
                         {
                             xData[i] = i;
-                            yData[i] = Math.Cos(i);
+                            yData[i] = Math.Cos(i * 0.1f);
 
                             xData2[i] = i;
-                            yData2[i] = Math.Cos(i) * 10;
+                            yData2[i] = Math.Cos(i * 0.1f) * 1000;
                         }
                         break;
                     case 2:
