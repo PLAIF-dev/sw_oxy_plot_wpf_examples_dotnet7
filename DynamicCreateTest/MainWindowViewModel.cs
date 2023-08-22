@@ -8,9 +8,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace DynamicCreateTest
 {
@@ -31,6 +33,11 @@ namespace DynamicCreateTest
         public ICommand BtnNewClickCommand { get; set; }
 
         public ICommand BtnDeleteClickCommand { get; set; }
+
+        public ICommand BtnStartClick { get; set; }
+        public ICommand BtnStopClick { get; set; }
+        public ICommand BtnClearClick { get; set; }
+
 
         private ObservableCollection<GraphViewModel> _viewModels = new ObservableCollection<GraphViewModel>();
 
@@ -64,6 +71,7 @@ namespace DynamicCreateTest
 
         public ObservableCollection<GraphModel.GraphDataSet> GraphDataSets { get; set; }
 
+        private DispatcherTimer timer;
         #endregion
 
         public MainWindowViewModel()
@@ -73,6 +81,9 @@ namespace DynamicCreateTest
             ListBoxChangedCommand = new RelayCommand(ListBoxSeletedChanged);
             BtnNewClickCommand = new RelayCommand(BtnNewClick);
             BtnDeleteClickCommand = new RelayCommand(BtnDeleteClick);
+            BtnStartClick = new RelayCommand(BtnStartCommand);
+            BtnStopClick = new RelayCommand(BtnStopCommand);
+            BtnClearClick = new RelayCommand(BtnClearCommand);
 
             List<double> xData = new List<double>();
             List<double> yData = new List<double>();
@@ -80,7 +91,7 @@ namespace DynamicCreateTest
             List<double> xData2 = new List<double>();
             List<double> yData2 = new List<double>();
 
-            for (int i = 0; i < 1000; i++)
+            for (float i = 0; i < 1000; i += 0.1f)
             {
                 xData.Add(Math.Sin(i));
                 yData.Add(Math.Cos(i));
@@ -102,6 +113,87 @@ namespace DynamicCreateTest
                 xData = xData2,
                 yData = yData2
             });
+            GraphDataSets.Add(new GraphModel.GraphDataSet()
+            {
+                Id = 2,
+                xData = xData2,
+                yData = yData2
+            });
+
+            //Timer 초기화
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromMilliseconds(5);
+            timer.Tick += CallBackTimer; 
+
+        }
+
+        public double xData = new double();
+        public double yData = new double();
+        double count = 0f;
+
+        private void CallBackTimer(object? sender, EventArgs e)
+        {
+            xData = count;
+            yData = Math.Sin(count) * 1000f;
+
+            foreach (GraphViewModel _graph in _viewModels)
+            {
+                if(_graph.GetCount(0) > 1000)
+                {
+                    _graph.RemoveAtFirst(0);
+                }
+                _graph.AddData(0, xData, yData);
+            }
+
+            count+=0.1;
+
+            if(count > 1000)
+            {
+                count= 0;
+            }
+        }
+
+        private void BtnStartCommand()
+        {
+            if (_viewModels != null)
+            {
+                if (_viewModels.Count > 0)
+                {
+                    ClearGraph();
+                    count = 0;
+                    timer.Start();
+                }
+            }
+        }
+
+        private void BtnStopCommand() 
+        {
+            if (_viewModels != null)
+            {
+                if (_viewModels.Count > 0)
+                {
+                    timer.Stop();
+                }
+            }
+        }
+
+        private void BtnClearCommand()
+        {
+            if (_viewModels != null)
+            {
+                if (_viewModels.Count > 0)
+                {
+                    ClearGraph();
+                }
+            }
+        }
+
+        private void ClearGraph()
+        {
+            foreach (GraphViewModel _graph in _viewModels)
+            {
+                _graph.Clear();
+            }
         }
 
         private void BtnNewClick()
@@ -122,49 +214,51 @@ namespace DynamicCreateTest
 
         private void ListBoxSeletedChanged()
         {
-            //double[] xData = new double[1000];
-            //double[] yData = new double[1000];
+            double[] xData = new double[1000];
+            double[] yData = new double[1000];
 
-            //double[] xData2 = new double[1000];
-            //double[] yData2 = new double[1000];
+            double[] xData2 = new double[1000];
+            double[] yData2 = new double[1000];
 
-            //if (_viewModels.Count > 0)
-            //{
-            //    foreach (GraphViewModel _graph in _viewModels)
-            //    {
-            //        _graph.Clear();
-            //    }
+            if (_viewModels.Count > 0)
+            {
+                foreach (GraphViewModel _graph in _viewModels)
+                {
+                    _graph.Clear();
+                }
 
-            //    switch (SelectedInd)
-            //    {
-            //        case 0:
-            //            for (int i = 0; i < 1000; i++)
-            //            {
-            //                xData[i] = Math.Sin(i);
-            //                yData[i] = Math.Cos(i);
+                switch (SelectedInd)
+                {
+                    case 0:
+                        for (int i = 0; i < 1000; i++)
+                        {
+                            xData[i] = Math.Sin(i);
+                            yData[i] = Math.Cos(i);
 
-            //                xData2[i] = Math.Sin(i) * 2;
-            //                yData2[i] = Math.Cos(i) * 2;
-            //            }             
-            //            break;
-            //        case 1:
-            //            for (int i = 0; i < 1000; i++)
-            //            {
-            //                xData[i] = i;
-            //                yData[i] = Math.Cos(i);
+                            xData2[i] = Math.Sin(i) * 2;
+                            yData2[i] = Math.Cos(i) * 2;
+                        }
+                        break;
+                    case 1:
+                        for (int i = 0; i < 1000; i++)
+                        {
+                            xData[i] = i;
+                            yData[i] = Math.Cos(i);
 
-            //                xData2[i] = i;
-            //                yData2[i] = Math.Cos(i) * 10;
-            //            }                      
-            //            break;
-            //    }
+                            xData2[i] = i;
+                            yData2[i] = Math.Cos(i) * 10;
+                        }
+                        break;
+                    case 2:
+                        return;
+                }
 
-            //    foreach (GraphViewModel _graph in _viewModels)
-            //    {
-            //        _graph.AddData(0, xData, yData);
-            //        _graph.AddData(1, xData2, yData2);
-            //    }
-            //}     
+                foreach (GraphViewModel _graph in _viewModels)
+                {
+                    _graph.AddData(0, xData, yData);
+                    _graph.AddData(1, xData2, yData2);
+                }
+            }
         }
     }
 }

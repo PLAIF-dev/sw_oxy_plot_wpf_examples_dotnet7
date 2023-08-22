@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using GraphCtrlLib.CustomTrackerManipulator;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
@@ -81,8 +82,11 @@ namespace GraphCtrlLib
         {
             model = new PlotModel();
             controller = new PlotController();
+            //controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PointsOnlyTrack);
+            controller.BindMouseDown(OxyMouseButton.Left, new DelegatePlotCommand<OxyMouseDownEventArgs>((view, controller, args) =>
+                controller.AddMouseManipulator(view, new StaysOpenTrackerManipulator(view), args)));
 
-            name= strGraphTitle;
+            name = strGraphTitle;
             model.Title = name;
 
             PlotDrop = new RelayCommand<DragEventArgs>(PlotView_Drop);
@@ -90,15 +94,18 @@ namespace GraphCtrlLib
             InitGraph();
         }
 
-        private void PlotView_Drop(DragEventArgs e)
+        private void PlotView_Drop(DragEventArgs? e)
         {
-            if (e.Data.GetData(typeof(GraphModel.GraphDataSet)) is GraphModel.GraphDataSet graphDataSet)
+            if(e != null)
             {
-                //Point position = e.GetPosition(graph);
-                //AddDataToGraph(graphDataSet, position);
+                if (e.Data.GetData(typeof(GraphModel.GraphDataSet)) is GraphModel.GraphDataSet graphDataSet)
+                {
+                    //Point position = e.GetPosition(graph);
+                    //AddDataToGraph(graphDataSet, position);
 
-                AddData(graphDataSet.Id, graphDataSet.xData, graphDataSet.yData);
-                ReDraw();
+                    AddData(graphDataSet.Id, graphDataSet.xData, graphDataSet.yData);
+                    ReDraw();
+                }
             }
         }
 
@@ -114,6 +121,10 @@ namespace GraphCtrlLib
             #region Axis
 
             AddAxis("Time", AxisPosition.Bottom);
+
+            model.Axes[0].Minimum = 0;
+            model.Axes[0].Maximum = 100;
+
             AddAxis("Value", AxisPosition.Left);
 
             #endregion
@@ -253,11 +264,20 @@ namespace GraphCtrlLib
 
         #region Data
 
+        //Utility
+        public int GetCount(int idx)
+        {
+            return dicLineGraph.Values.ToList()[idx].Points.Count;
+        }
+
         //New Line
 
         private void AddData(LineSeries ls, double data1, double data2)
         {
             ls.Points.Add(new DataPoint(data1, data2));
+
+            model.Axes[0].Minimum = ls.Points[0].X;
+            model.Axes[0].Maximum = 100 + ls.Points[0].X;
         }
 
         private void AddData(LineSeries ls, double[] data1, double[] data2)
@@ -363,6 +383,22 @@ namespace GraphCtrlLib
             }
 
             ReDraw();
+        }
+
+        //Delete
+        public void RemoveAtFirst(int idx) 
+        {
+            LineSeries? ls = new LineSeries();
+
+            if (dicLineGraph.Count > 0 && dicLineGraph.Count >= idx + 1)
+            {
+                ls = dicLineGraph.Values.ToList()[idx];
+                ls.Points.RemoveAt(0);
+            }
+            else
+            {
+                throw new Exception("올바르지 않은 Index");
+            }
         }
 
         #endregion

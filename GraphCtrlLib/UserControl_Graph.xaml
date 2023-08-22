@@ -1,30 +1,45 @@
-﻿<UserControl x:Class="GraphCtrlLib.UserControl_Graph"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:GraphCtrlLib"
-             xmlns:oxy="http://oxyplot.org/wpf"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             mc:Ignorable="d" 
-             d:DesignHeight="500" d:DesignWidth="500"
-             x:Name="graph">
+﻿<UserControl
+    x:Class="GraphCtrlLib.UserControl_Graph"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:GraphCtrlLib"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:oxy="http://oxyplot.org/wpf"
+    x:Name="graph"
+    d:DesignHeight="500"
+    d:DesignWidth="500"
+    mc:Ignorable="d">
 
     <!--<UserControl.DataContext>
         <local:GraphViewModel></local:GraphViewModel>
     </UserControl.DataContext>-->
 
     <Grid>
+        <oxy:PlotView
+            Grid.Row="0"
+            AllowDrop="True"
+            Controller="{Binding Path=Controller}"
+            DragOver="PlotView_DragOver"
+            Model="{Binding Path=Model}">
 
-        <oxy:PlotView Grid.Row="0" Model="{Binding Path=Model}" Controller="{Binding Path=Controller}" AllowDrop="True" DragOver="PlotView_DragOver">
+            <oxy:PlotView.DefaultTrackerTemplate>
+                <ControlTemplate>
+                    <oxy:TrackerControl
+                        LineExtents="{Binding PlotModel.PlotArea}"
+                        LineStroke="Red"
+                        LineThickness="2"
+                        Position="{Binding Position}" 
+                        HorizontalLineVisibility="Collapsed"/>
+                </ControlTemplate>
+            </oxy:PlotView.DefaultTrackerTemplate>
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">
-                    <i:InvokeCommandAction Command="{Binding PlotDrop}" PassEventArgsToCommand="True"/>
+                    <i:InvokeCommandAction Command="{Binding PlotDrop}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-
         </oxy:PlotView>
-
     </Grid>
 </UserControl>

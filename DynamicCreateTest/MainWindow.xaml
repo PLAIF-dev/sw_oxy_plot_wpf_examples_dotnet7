@@ -1,46 +1,52 @@
-﻿<Window x:Class="DynamicCreateTest.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-        xmlns:local="clr-namespace:DynamicCreateTest"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="1200">
+﻿<Window
+    x:Class="DynamicCreateTest.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:DynamicCreateTest"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="1200"
+    Height="800"
+    mc:Ignorable="d">
 
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/GraphCtrlLib;component/mapping.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/GraphCtrlLib;component/mapping.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
     <Window.DataContext>
-        <local:MainWindowViewModel/>
+        <local:MainWindowViewModel />
     </Window.DataContext>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="240"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="120" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column ="0">
-            <ListView SelectedIndex="{Binding SelectedInd}" ItemsSource="{Binding GraphDataSets}" PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown">
+        <Grid Grid.Column="0">
+            <ListView
+                ItemsSource="{Binding GraphDataSets}"
+                PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                SelectedIndex="{Binding SelectedInd}">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Id}"></TextBlock>
+                        <TextBlock Text="{Binding Id}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
 
-               
+
                 <!--<ListBoxItem>
                     <TextBlock Text="Graph2"></TextBlock>
                 </ListBoxItem>-->
- 
+
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding ListBoxChangedCommand}" />
@@ -50,16 +56,16 @@
             </ListView>
         </Grid>
 
-        <Grid Grid.Column ="1">
+        <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <StackPanel Orientation="Horizontal" Background="White">
-                    <Button Content="New" Command="{Binding BtnNewClickCommand}"></Button>
-                    <Button Content="Delete" Command="{Binding BtnDeleteClickCommand}"></Button>
+                <StackPanel Background="White" Orientation="Horizontal">
+                    <Button Command="{Binding BtnNewClickCommand}" Content="New" />
+                    <Button Command="{Binding BtnDeleteClickCommand}" Content="Delete" />
                 </StackPanel>
             </Grid>
 
@@ -67,14 +73,13 @@
                 <ItemsControl ItemsSource="{Binding ViewModels}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <UniformGrid>
-                            </UniformGrid>
+                            <UniformGrid />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <ContentControl Content="{Binding}" Margin="0,0,5,5"/>
+                            <ContentControl Margin="0,0,5,5" Content="{Binding}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -82,13 +87,28 @@
         </Grid>
 
         <Grid Grid.Column="2">
-            <StackPanel Orientation="Vertical" Margin="10">
-                <Button Content="Start" Height="50" Margin="5"></Button>
-                <Button Content="Stop" Height="50" Margin="5" ></Button>
-                <Button Content="Clear" Height="50" Margin="5"></Button>
-                <Button Content="Test" Height="50" Margin="5" ></Button>
+            <StackPanel Margin="10" Orientation="Vertical">
+                <Button
+                    Height="50"
+                    Margin="5"
+                    Content="Start"
+                    Command="{Binding BtnStartClick}"/>
+                <Button
+                    Height="50"
+                    Margin="5"
+                    Content="Stop" 
+                    Command="{Binding BtnStopClick}"/>
+                <Button
+                    Height="50"
+                    Margin="5"
+                    Content="Clear" 
+                    Command="{Binding BtnClearClick}"/>
+                <Button
+                    Height="50"
+                    Margin="5"
+                    Content="Test" />
             </StackPanel>
         </Grid>
     </Grid>
-    
+
 </Window>
