@@ -25,6 +25,12 @@ namespace OxyPlotTest
             window.Show();
         }
 
+        private void graphreseachBtn_Click(object sender, RoutedEventArgs e)
+        {
+            GraphResearch.MainWindow window = new();
+            window.Show();
+        }
+
         private void rostopicBtn_Click(object sender, RoutedEventArgs e)
         {
             RostopicTest.MainWindow window = new();

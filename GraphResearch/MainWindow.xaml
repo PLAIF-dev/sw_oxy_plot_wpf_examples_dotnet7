@@ -1,0 +1,119 @@
+﻿<Window
+    x:Class="GraphResearch.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:GraphResearch"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="1200"
+    Height="800"
+    mc:Ignorable="d">
+   
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/GraphCtrlLib;component/mapping.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Window.DataContext>
+        <local:MainViewModel />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="120" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <ListView
+                ItemsSource="{Binding GraphDataSets}"
+                PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                SelectedIndex="{Binding SelectedInd}">
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Id}" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+
+                <!--<ListBoxItem>
+                    <TextBlock Text="Graph2"></TextBlock>
+                </ListBoxItem>-->
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding ListBoxChangedCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+            </ListView>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <StackPanel Background="White" Orientation="Horizontal">
+                    <Button Command="{Binding BtnNewClickCommand}" Content="New" />
+                    <Button Command="{Binding BtnDeleteClickCommand}" Content="Delete" />
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <ItemsControl ItemsSource="{Binding ViewModels}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ContentControl Margin="0,0,5,5" Content="{Binding}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="2">
+            <StackPanel Margin="10" Orientation="Vertical">
+                <Button
+                    Height="50"
+                    Margin="5"
+                    Content="Start"
+                    Command="{Binding BtnStartClick}"/>
+                <Button
+                    Height="50"
+                    Margin="5"
+                    Content="Stop" 
+                    Command="{Binding BtnStopClick}"/>
+                <Button
+                    Height="50"
+                    Margin="5"
+                    Content="Clear" 
+                    Command="{Binding BtnClearClick}"/>
+                <Button
+                    Height="50"
+                    Margin="5"
+                    Content="Test" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</Window>
+
+
+    
+    

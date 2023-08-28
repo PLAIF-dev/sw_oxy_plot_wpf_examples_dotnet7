@@ -20,7 +20,7 @@
         </StackPanel>
         <StackPanel Grid.Column="1">
             <Button x:Name="dynamicBtn" Content="동적 그래프 생성" FontSize="20" Margin="10 20 10 10" Click="dynamicBtn_Click"/>
-            <Button Content="~~" FontSize="20" Margin="10"/>
+            <Button x:Name="graphresearchBtn" Content="그래프 기능 연구" FontSize="20" Margin="10" Click="graphreseachBtn_Click"/>
         </StackPanel>
     </Grid>
 </Window>
