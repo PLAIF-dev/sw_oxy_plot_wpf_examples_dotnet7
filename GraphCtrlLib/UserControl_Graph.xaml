@@ -39,6 +39,10 @@
                 <i:EventTrigger EventName="Drop">
                     <i:InvokeCommandAction Command="{Binding PlotDrop}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
+
+                <i:EventTrigger EventName="Loaded">
+                    <i:InvokeCommandAction Command="{Binding PlotLoadedCommand}" />
+                </i:EventTrigger>
             </i:Interaction.Triggers>
         </oxy:PlotView>
     </Grid>

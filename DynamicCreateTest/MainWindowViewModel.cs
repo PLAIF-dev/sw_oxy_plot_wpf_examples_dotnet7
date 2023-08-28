@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GraphCtrlLib;
 using OxyPlot.Axes;
 using System;
@@ -126,8 +127,37 @@ namespace DynamicCreateTest
             //Timer 초기화
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(5);
-            timer.Tick += CallBackTimer; 
+            timer.Tick += CallBackTimer;
 
+            #region Messenger
+
+            var Messageee = WeakReferenceMessenger.Default;
+            Messageee.Register<GraphCtrlLib.Message.SharedMessge>(this, OnMessageReceived);
+
+            #endregion
+
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="obj"></param> 객체 전송자
+        /// <param name="message"></param> 메세지
+        private void OnMessageReceived(object obj, GraphCtrlLib.Message.SharedMessge message)
+        {
+            double DataX = message.DataX;
+            double DataY = message.DataY;
+
+            double sDataX = message.sDataX;
+            double sDataY = message.sDataY;
+
+            object e = message.e;
+
+            int Index = message.DataIndex;
+
+            foreach (GraphViewModel _graph in _viewModels)
+            {
+                _graph.SyncTracker(DataX, DataY, sDataX, sDataY, e, Index);
+            }
         }
 
         public double xData = new double();
