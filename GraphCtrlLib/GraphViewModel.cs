@@ -13,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Input.Manipulations;
 
 namespace GraphCtrlLib
 {
@@ -58,6 +59,8 @@ namespace GraphCtrlLib
             }
         }
 
+        private StaysOpenTrackerManipulator manipulator { get; set; }
+
         private string name;
 
         public string Name
@@ -77,21 +80,66 @@ namespace GraphCtrlLib
         public ICommand PlotDrop { get; set; }
 
         public ICommand PlotDragOver { get; set; }
+        public ICommand PlotLoadedCommand { get; set; }
 
         public GraphViewModel(string strGraphTitle = "Graph") 
         {
             model = new PlotModel();
             controller = new PlotController();
             //controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PointsOnlyTrack);
-            controller.BindMouseDown(OxyMouseButton.Left, new DelegatePlotCommand<OxyMouseDownEventArgs>((view, controller, args) =>
-                controller.AddMouseManipulator(view, new StaysOpenTrackerManipulator(view), args)));
 
+            controller.BindMouseDown(OxyMouseButton.Left, new DelegatePlotCommand<OxyMouseDownEventArgs>((view, controller, args) =>
+            {
+                manipulator = new StaysOpenTrackerManipulator(view);
+                controller.AddMouseManipulator(view, manipulator, args);           
+            }));
+     
             name = strGraphTitle;
             model.Title = name;
 
             PlotDrop = new RelayCommand<DragEventArgs>(PlotView_Drop);
+            PlotLoadedCommand = new RelayCommand(OnPlotLoaded);
 
             InitGraph();
+        }
+
+        private void OnPlotLoaded()
+        {
+            if (manipulator == null)
+            {
+                //한번 임시로 누른 것으로 하여 manipulator 객체를 생성시킨다.
+                var simulatorArgs = new OxyMouseDownEventArgs()
+                {
+                    Position = new ScreenPoint(100, 100),
+                    ChangedButton = OxyMouseButton.Left,
+                    ClickCount = 1
+                };
+
+                controller.HandleMouseDown(model.PlotView, simulatorArgs);
+            }
+        }
+
+        public void SyncTracker(double dataX, double dataY, double sPointX, double sPointY, object obj, int Index)
+        {
+            var series = model.Series[0] as LineSeries;
+
+            if (manipulator == null)
+            {
+                //한번 임시로 누른 것으로 하여 manipulator 객체를 생성시킨다.
+                var simulatorArgs = new OxyMouseDownEventArgs()
+                {
+                    Position = new ScreenPoint(sPointX, 0),
+                    ChangedButton = OxyMouseButton.Left,
+                    ClickCount = 1
+                };
+
+                controller.HandleMouseDown(model.PlotView, simulatorArgs);
+            }
+
+            if (manipulator != null && series != null)
+            {
+                manipulator.ShowTracker(series, new DataPoint(dataX, dataY), new ScreenPoint(sPointX, sPointY), obj, Index);
+            }  
         }
 
         private void PlotView_Drop(DragEventArgs? e)
