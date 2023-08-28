@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DynamicCreateTest\DynamicCreateTest.csproj" />
+    <ProjectReference Include="..\GraphResearch\GraphResearch.csproj" />
     <ProjectReference Include="..\RostopicTest\RostopicTest.csproj" />
     <ProjectReference Include="..\WpfExamples\WpfExamples.csproj" />
   </ItemGroup>

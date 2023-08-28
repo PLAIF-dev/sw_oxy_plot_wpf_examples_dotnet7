@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RostopicTest", "RostopicTes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DynamicCreateTest", "DynamicCreateTest\DynamicCreateTest.csproj", "{C96686AC-104C-4650-8D11-C377B70128E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphCtrlLib", "GraphCtrlLib\GraphCtrlLib.csproj", "{1D1519D4-55AC-4C60-8453-251A52C2C899}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphCtrlLib", "GraphCtrlLib\GraphCtrlLib.csproj", "{1D1519D4-55AC-4C60-8453-251A52C2C899}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphResearch", "GraphResearch\GraphResearch.csproj", "{2042473C-4FDF-4040-9E26-E07CACE91B6C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1D1519D4-55AC-4C60-8453-251A52C2C899} = {1D1519D4-55AC-4C60-8453-251A52C2C899}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +44,10 @@ Global
 		{1D1519D4-55AC-4C60-8453-251A52C2C899}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D1519D4-55AC-4C60-8453-251A52C2C899}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D1519D4-55AC-4C60-8453-251A52C2C899}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2042473C-4FDF-4040-9E26-E07CACE91B6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2042473C-4FDF-4040-9E26-E07CACE91B6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2042473C-4FDF-4040-9E26-E07CACE91B6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2042473C-4FDF-4040-9E26-E07CACE91B6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
