@@ -45,16 +45,16 @@ namespace GraphResearch
             get { return _viewModels; }
         }
 
-        private object? _contentView;
-        public object ContentView
-        {
-            get { return this._contentView; }
-            set
-            {
-                this._contentView = value;
-                NotifyPropertyChanged(nameof(ContentView));
-            }
-        }
+        //private object? _contentView;
+        //public object ContentView
+        //{
+        //    get { return this._contentView; }
+        //    set
+        //    {
+        //        this._contentView = value;
+        //        NotifyPropertyChanged(nameof(ContentView));
+        //    }
+        //}
 
         private int _selectedInd;
 
@@ -147,13 +147,14 @@ namespace GraphResearch
             double sDataX = message.sDataX;
             double sDataY = message.sDataY;
 
-            object e = message.e;
-
-            int Index = message.DataIndex;
-
-            foreach (GraphViewModel _graph in _viewModels)
+            var e = message.e;
+            if (e != null)
             {
-                _graph.SyncTracker(DataX, DataY, sDataX, sDataY, e, Index);
+                int index = message.DataIndex;
+                foreach (GraphViewModel _graph in _viewModels)
+                {
+                    _graph.SyncTracker(DataX, DataY, sDataX, sDataY, e, index);
+                }
             }
         }
 
@@ -291,5 +292,37 @@ namespace GraphResearch
             }
         }
 
+        private double currentTime = 0.0;
+        public double CurrentTime
+        {
+            get { return currentTime; }
+            set { currentTime = value;
+                OnPropertyChanged(nameof(CurrentTime));
+
+                // update each graph's vertical lines
+                foreach (GraphViewModel gm in _viewModels)
+                    gm.SetverticalLineTrackerX(currentTime);
+            }
+        }
+        private double minumumTime = 0.0;
+        public double MinumumTime
+        {
+            get { return minumumTime; }
+            set
+            {
+                minumumTime = value;
+                OnPropertyChanged(nameof(MinumumTime));
+            }
+        }
+        private double maximumTime = 5000.0;
+        public double MaximumTime
+        {
+            get { return maximumTime; }
+            set
+            {
+                maximumTime = value;
+                OnPropertyChanged(nameof(MaximumTime));
+            }
+        }
     }
 }
