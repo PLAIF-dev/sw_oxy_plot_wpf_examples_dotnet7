@@ -15,7 +15,7 @@ using System.Windows.Input;
 
 namespace GraphResearch
 {
-    class MainViewModel : INotifyPropertyChanged
+    public class MainViewModel : INotifyPropertyChanged
     {
         #region NotifyProperty
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -73,7 +73,7 @@ namespace GraphResearch
         private DispatcherTimer timer;
         #endregion
 
-        public const double MaxGraphNum = 5000;
+        public const double MaxGraphNum = 50;
 
         public MainViewModel()
         {
@@ -94,8 +94,8 @@ namespace GraphResearch
 
             for (float i = 0; i < MaxGraphNum; i += 0.1f)
             {
-                xData.Add(Math.Sin(i));
-                yData.Add(Math.Cos(i));
+                xData.Add(Math.Sin(i) * 10 + 25);
+                yData.Add(Math.Cos(i) * 10);
 
                 xData2.Add(i);
                 yData2.Add(Math.Cos(i) * 10);
@@ -105,18 +105,21 @@ namespace GraphResearch
             GraphDataSets.Add(new GraphModel.GraphDataSet()
             {
                 Id = 0,
+                LineName = "lineA",
                 xData = xData,
                 yData = yData
             });
             GraphDataSets.Add(new GraphModel.GraphDataSet()
             {
                 Id = 1,
+                LineName = "lineB",
                 xData = xData2,
                 yData = yData2
             });
             GraphDataSets.Add(new GraphModel.GraphDataSet()
             {
                 Id = 2,
+                LineName = "lineC",
                 xData = xData2,
                 yData = yData2
             });
@@ -244,51 +247,51 @@ namespace GraphResearch
 
         private void ListBoxSeletedChanged()
         {
-            double[] xData = new double[Convert.ToInt32(MaxGraphNum)];
-            double[] yData = new double[Convert.ToInt32(MaxGraphNum)];
+            //double[] xData = new double[Convert.ToInt32(MaxGraphNum)];
+            //double[] yData = new double[Convert.ToInt32(MaxGraphNum)];
 
-            double[] xData2 = new double[Convert.ToInt32(MaxGraphNum)];
-            double[] yData2 = new double[Convert.ToInt32(MaxGraphNum)];
+            //double[] xData2 = new double[Convert.ToInt32(MaxGraphNum)];
+            //double[] yData2 = new double[Convert.ToInt32(MaxGraphNum)];
 
-            if (_viewModels.Count > 0)
-            {
-                foreach (GraphViewModel _graph in _viewModels)
-                {
-                    _graph.Clear();
-                }
+            //if (_viewModels.Count > 0)
+            //{
+            //    foreach (GraphViewModel _graph in _viewModels)
+            //    {
+            //        _graph.Clear();
+            //    }
 
-                switch (SelectedInd)
-                {
-                    case 0:
-                        for (int i = 0; i < MaxGraphNum; i++)
-                        {
-                            xData[i] = Math.Sin(i * 0.1f);
-                            yData[i] = Math.Cos(i * 0.1f);
+            //    switch (SelectedInd)
+            //    {
+            //        case 0:
+            //            for (int i = 0; i < MaxGraphNum; i++)
+            //            {
+            //                xData[i] = Math.Sin(i * 0.1f);
+            //                yData[i] = Math.Cos(i * 0.1f);
 
-                            xData2[i] = Math.Sin(i * 0.1f) * 2;
-                            yData2[i] = Math.Cos(i * 0.1f) * 2;
-                        }
-                        break;
-                    case 1:
-                        for (int i = 0; i < MaxGraphNum; i++)
-                        {
-                            xData[i] = i;
-                            yData[i] = Math.Cos(i * 0.1f);
+            //                xData2[i] = Math.Sin(i * 0.1f) * 2;
+            //                yData2[i] = Math.Cos(i * 0.1f) * 2;
+            //            }
+            //            break;
+            //        case 1:
+            //            for (int i = 0; i < MaxGraphNum; i++)
+            //            {
+            //                xData[i] = i;
+            //                yData[i] = Math.Cos(i * 0.1f);
 
-                            xData2[i] = i;
-                            yData2[i] = Math.Cos(i * 0.1f) * 1000;
-                        }
-                        break;
-                    case 2:
-                        return;
-                }
+            //                xData2[i] = i;
+            //                yData2[i] = Math.Cos(i * 0.1f) * 1000;
+            //            }
+            //            break;
+            //        case 2:
+            //            return;
+            //    }
 
-                foreach (GraphViewModel _graph in _viewModels)
-                {
-                    _graph.AddData(0, xData, yData);
-                    _graph.AddData(1, xData2, yData2);
-                }
-            }
+            //    foreach (GraphViewModel _graph in _viewModels)
+            //    {
+            //        _graph.AddData(0, xData, yData);
+            //        _graph.AddData(1, xData2, yData2);
+            //    }
+            //}
         }
 
     }

@@ -146,12 +146,17 @@ namespace GraphCtrlLib
         {
             if(e != null)
             {
-                if (e.Data.GetData(typeof(GraphModel.GraphDataSet)) is GraphModel.GraphDataSet graphDataSet)
-                {
-                    //Point position = e.GetPosition(graph);
-                    //AddDataToGraph(graphDataSet, position);
+                var items = e.Data.GetData(typeof(List<object>));
+                List<GraphModel.GraphDataSet>? listItem = ((System.Collections.IEnumerable)items).Cast<GraphModel.GraphDataSet>().ToList();
 
-                    AddData(graphDataSet.Id, graphDataSet.xData, graphDataSet.yData);
+                if (listItem != null)
+                {
+                    foreach (var graphdata in listItem)
+                    {
+                        //AddData(graphdata.Id, graphdata.xData, graphdata.yData);
+                        AddData(graphdata.LineName, graphdata.xData, graphdata.yData);
+                    }
+
                     ReDraw();
                 }
             }
@@ -171,7 +176,7 @@ namespace GraphCtrlLib
             AddAxis("Time", AxisPosition.Bottom);
 
             model.Axes[0].Minimum = 0;
-            model.Axes[0].Maximum = 5000;
+            model.Axes[0].Maximum = 50;
 
             AddAxis("Value", AxisPosition.Left);
 
@@ -189,8 +194,8 @@ namespace GraphCtrlLib
             //Model.TextColor = OxyColor.FromRgb(128, 128, 128);
 
             #region Line Setting
-            AddLine("LineA");
-            AddLine("LineB");
+            //AddLine("LineA");
+            //AddLine("LineB");
             #endregion
 
             ReDraw();
@@ -226,13 +231,15 @@ namespace GraphCtrlLib
         #region GUI
         public void Clear()
         {
-            //listSeries.Clear();
-
-            foreach(LineSeries ls in dicLineGraph.Values)
+            model.Series.Clear();
+            model.Axes.Clear();
+            foreach (LineSeries ls in dicLineGraph.Values)
             {
                 ls.Points.Clear();
             }
+            dicLineGraph.Clear();
 
+            InitGraph();
             ReDraw();
         }
         #endregion
@@ -246,8 +253,6 @@ namespace GraphCtrlLib
 
             //Line 설정
             ls.Title = strLineTitle;
-            //LineSeries.InterpolationAlgorithm = InterpolationAlgorithms.UniformCatmullRomSpline;
-            //ls.Color = OxyColor.FromAColor(200, OxyColors.Automatic);
             ls.Color = color;
             ls.StrokeThickness = LineThickness;
             ls.CanTrackerInterpolatePoints = false;
@@ -322,134 +327,192 @@ namespace GraphCtrlLib
 
         private void AddData(LineSeries ls, double data1, double data2)
         {
-            ls.Points.Add(new DataPoint(data1, data2));
+            try
+            {
+                ls.Points.Add(new DataPoint(data1, data2));
 
-            model.Axes[0].Minimum = ls.Points[0].X;
-            model.Axes[0].Maximum = 5000 + ls.Points[0].X;
+                model.Axes[0].Minimum = ls.Points[0].X;
+                model.Axes[0].Maximum = 50 + ls.Points[0].X;
+            }
+            catch
+            {
+
+            }
         }
 
         private void AddData(LineSeries ls, double[] data1, double[] data2)
         {
-            //data1과 data2의 크기 확인
-            for (int i = 0; i < data1.Count(); i++)
+            try
             {
-                AddData(ls, data1[i], data2[i]);
+                //data1과 data2의 크기 확인
+                for (int i = 0; i < data1.Count(); i++)
+                {
+                    AddData(ls, data1[i], data2[i]);
+                }
+            }
+            catch
+            {
+
             }
         }
 
         public void AddData(int idx, double data1, double data2)
         {
-            LineSeries? ls = new LineSeries();
-
-            if(dicLineGraph.Count > 0 && dicLineGraph.Count >= idx + 1)
+            try
             {
-                ls = dicLineGraph.Values.ToList()[idx];
-                AddData(ls, data1, data2);
+                LineSeries? ls = new LineSeries();
+
+                if (dicLineGraph.Count > 0 && dicLineGraph.Count >= idx + 1)
+                {
+                    ls = dicLineGraph.Values.ToList()[idx];
+                    AddData(ls, data1, data2);
+                }
+                else
+                {
+                    throw new Exception("올바르지 않은 Index");
+                }
+
+                ReDraw();
             }
-            else
+            catch
             {
                 throw new Exception("올바르지 않은 Index");
             }
-
-            ReDraw();
         }
 
         public void AddData(int idx, double[] data1, double[] data2)
         {
-            LineSeries? ls = new LineSeries();
-
-            if (dicLineGraph.Count > 0 && dicLineGraph.Count >= idx + 1)
+            try
             {
-                ls = dicLineGraph.Values.ToList()[idx];
-                AddData(ls, data1, data2);
+                LineSeries? ls = new LineSeries();
+
+                if (dicLineGraph.Count > 0 && dicLineGraph.Count >= idx + 1)
+                {
+                    ls = dicLineGraph.Values.ToList()[idx];
+                    AddData(ls, data1, data2);
+                }
+                else
+                {
+                    throw new Exception("올바르지 않은 Index");
+                }
+
+                ReDraw();
             }
-            else
+            catch 
             {
                 throw new Exception("올바르지 않은 Index");
             }
-
-            ReDraw();
         }
 
         public void AddData(int idx, List<double> data1, List<double> data2)
         {
-            LineSeries? ls = new LineSeries();
-
-            if (dicLineGraph.Count > 0 && dicLineGraph.Count >= idx + 1)
+            try
             {
-                ls = dicLineGraph.Values.ToList()[idx];
-                AddData(ls, data1.ToArray(), data2.ToArray());
+                LineSeries? ls = new LineSeries();
+
+                if (dicLineGraph.Count > 0 && dicLineGraph.Count >= idx + 1)
+                {
+                    ls = dicLineGraph.Values.ToList()[idx];
+                    AddData(ls, data1.ToArray(), data2.ToArray());
+                }
+                else
+                {
+                    throw new Exception("올바르지 않은 Index");
+                }
+
+                ReDraw();
             }
-            else
+            catch
             {
                 throw new Exception("올바르지 않은 Index");
             }
-
-            ReDraw();
         }
 
         public void AddData(string strLineName, double data1, double data2)
         {
-            LineSeries? ls = new LineSeries();
-            if(dicLineGraph.TryGetValue(strLineName, out ls))
+            try
             {
-                AddData(ls, data1, data2);
+                LineSeries? ls = new LineSeries();
+                if (dicLineGraph.TryGetValue(strLineName, out ls))
+                {
+                    AddData(ls, data1, data2);
+                }
+                else
+                {
+                    throw new Exception("올바르지 않은 LineName");
+                }
+
+                ReDraw();
             }
-            else
+            catch 
             {
                 throw new Exception("올바르지 않은 LineName");
             }
-
-            ReDraw();
         }
 
         public void AddData(string strLineName, double[] data1, double[] data2)
         {
-            LineSeries? ls = new LineSeries();
-            if (dicLineGraph.TryGetValue(strLineName, out ls))
+            try
             {
-                AddData(ls, data1, data2);
+                LineSeries? ls = new LineSeries();
+                if (dicLineGraph.TryGetValue(strLineName, out ls))
+                {
+                    AddData(ls, data1, data2);
+                }
+                else
+                {
+                    throw new Exception("올바르지 않은 LineName");
+                }
+
+                ReDraw();
             }
-            else
+            catch
             {
                 throw new Exception("올바르지 않은 LineName");
             }
-
-            ReDraw();
         }
 
         public void AddData(string strLineName, List<double> data1, List<double> data2)
         {
-            LineSeries? ls = new LineSeries();
-            if (dicLineGraph.TryGetValue(strLineName, out ls))
+            try
             {
-                AddData(ls, data1.ToArray(), data2.ToArray());
+                LineSeries? ls = new LineSeries();
+                if (dicLineGraph.TryGetValue(strLineName, out ls) == false)
+                {
+                    AddLine(strLineName);
+
+                    if (dicLineGraph.TryGetValue(strLineName, out ls))
+                    {
+                        AddData(ls, data1.ToArray(), data2.ToArray());
+                    }                
+                }
+
+                ReDraw();
             }
-            else
+            catch
             {
                 throw new Exception("올바르지 않은 LineName");
             }
-
-            ReDraw();
         }
 
         //Delete
-        public void RemoveAtFirst(int idx) 
+        public void RemoveLine(string lineName) 
         {
-            LineSeries? ls = new LineSeries();
+            try
+            {
+                foreach(var line in model.Series.Where(s => s.Title == lineName).ToList())
+                {
+                    model.Series.Remove(line);
+                }
 
-            if (dicLineGraph.Count > 0 && dicLineGraph.Count >= idx + 1)
-            {
-                ls = dicLineGraph.Values.ToList()[idx];
-                ls.Points.RemoveAt(0);
+                dicLineGraph.Remove(lineName);
             }
-            else
+            catch 
             {
-                throw new Exception("올바르지 않은 Index");
+
             }
         }
 
         #endregion
-
     }
 }

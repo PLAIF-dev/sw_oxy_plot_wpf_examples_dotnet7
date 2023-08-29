@@ -10,7 +10,7 @@
     Width="1200"
     Height="800"
     mc:Ignorable="d">
-   
+
 
     <Window.Resources>
         <ResourceDictionary>
@@ -35,7 +35,9 @@
             <ListView
                 ItemsSource="{Binding GraphDataSets}"
                 PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                SelectedIndex="{Binding SelectedInd}">
+                PreviewMouseMove="ListView_PreviewMouseMove"
+                SelectedIndex="{Binding SelectedInd}"
+                SelectionMode="Extended">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -43,16 +45,11 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
 
-
-                <!--<ListBoxItem>
-                    <TextBlock Text="Graph2"></TextBlock>
-                </ListBoxItem>-->
-
-                <i:Interaction.Triggers>
+                <!--<i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding ListBoxChangedCommand}" />
                     </i:EventTrigger>
-                </i:Interaction.Triggers>
+                </i:Interaction.Triggers>-->
 
             </ListView>
         </Grid>
@@ -92,18 +89,18 @@
                 <Button
                     Height="50"
                     Margin="5"
-                    Content="Start"
-                    Command="{Binding BtnStartClick}"/>
+                    Command="{Binding BtnStartClick}"
+                    Content="Start" />
                 <Button
                     Height="50"
                     Margin="5"
-                    Content="Stop" 
-                    Command="{Binding BtnStopClick}"/>
+                    Command="{Binding BtnStopClick}"
+                    Content="Stop" />
                 <Button
                     Height="50"
                     Margin="5"
-                    Content="Clear" 
-                    Command="{Binding BtnClearClick}"/>
+                    Command="{Binding BtnClearClick}"
+                    Content="Clear" />
                 <Button
                     Height="50"
                     Margin="5"
@@ -115,5 +112,5 @@
 </Window>
 
 
-    
-    
+
+
