@@ -82,6 +82,7 @@ namespace GraphCtrlLib
         {
             verticalLineTracker.X = x;
             verticalLineTracker.Text = text;
+            model.InvalidatePlot(false);
         }
 
         private LineAnnotation verticalLineTracker = new LineAnnotation()
@@ -90,7 +91,7 @@ namespace GraphCtrlLib
             Color = OxyColors.Red,
             LineStyle = LineStyle.Solid,
             TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Right,
-            TextVerticalAlignment = OxyPlot.VerticalAlignment.Bottom
+            TextVerticalAlignment = OxyPlot.VerticalAlignment.Bottom,
         };
 
         public ICommand PlotDrop { get; set; }

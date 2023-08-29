@@ -291,5 +291,37 @@ namespace GraphResearch
             }
         }
 
+        private double currentTime = 0.0;
+        public double CurrentTime
+        {
+            get { return currentTime; }
+            set { currentTime = value;
+                OnPropertyChanged(nameof(CurrentTime));
+
+                // update each graph's vertical lines
+                foreach (GraphViewModel gm in _viewModels)
+                    gm.SetverticalLineTrackerX(currentTime);
+            }
+        }
+        private double minumumTime = 0.0;
+        public double MinumumTime
+        {
+            get { return minumumTime; }
+            set
+            {
+                minumumTime = value;
+                OnPropertyChanged(nameof(MinumumTime));
+            }
+        }
+        private double maximumTime = 5000.0;
+        public double MaximumTime
+        {
+            get { return maximumTime; }
+            set
+            {
+                maximumTime = value;
+                OnPropertyChanged(nameof(MaximumTime));
+            }
+        }
     }
 }
