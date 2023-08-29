@@ -60,7 +60,7 @@ namespace GraphCtrlLib
             }
         }
 
-        private StaysOpenTrackerManipulator manipulator { get; set; }
+        private StaysOpenTrackerManipulator? manipulator { get; set; }
 
         private string name;
 
@@ -96,7 +96,7 @@ namespace GraphCtrlLib
 
         public ICommand PlotDrop { get; set; }
 
-        public ICommand PlotDragOver { get; set; }
+        public ICommand? PlotDragOver { get; set; }
         public ICommand PlotLoadedCommand { get; set; }
 
         public GraphViewModel(string strGraphTitle = "Graph") 
