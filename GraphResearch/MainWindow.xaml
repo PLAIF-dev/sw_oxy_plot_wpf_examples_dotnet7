@@ -35,7 +35,9 @@
             <ListView
                 ItemsSource="{Binding GraphDataSets}"
                 PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
-                SelectedIndex="{Binding SelectedInd}">
+                PreviewMouseMove="ListView_PreviewMouseMove"
+                SelectedIndex="{Binding SelectedInd}"
+                SelectionMode="Extended">
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -43,16 +45,11 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
 
-
-                <!--<ListBoxItem>
-                    <TextBlock Text="Graph2"></TextBlock>
-                </ListBoxItem>-->
-
-                <i:Interaction.Triggers>
+                <!--<i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding ListBoxChangedCommand}" />
                     </i:EventTrigger>
-                </i:Interaction.Triggers>
+                </i:Interaction.Triggers>-->
 
             </ListView>
         </Grid>
