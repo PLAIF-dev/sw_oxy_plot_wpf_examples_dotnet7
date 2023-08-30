@@ -95,9 +95,10 @@ namespace GraphCtrlLib
         };
 
         public ICommand PlotDrop { get; set; }
-
         public ICommand? PlotDragOver { get; set; }
         public ICommand PlotLoadedCommand { get; set; }
+        public ICommand ResetCommand { get; set; }
+        public ICommand SplitCommand { get; set; }
 
         public GraphViewModel(string strGraphTitle = "Graph") 
         {
@@ -117,8 +118,21 @@ namespace GraphCtrlLib
             model.Annotations.Add(verticalLineTracker);
             PlotDrop = new RelayCommand<DragEventArgs>(PlotView_Drop);
             PlotLoadedCommand = new RelayCommand(OnPlotLoaded);
+            ResetCommand = new RelayCommand(ResetPlot);
+            SplitCommand = new RelayCommand(SplitLineCommand);
 
             InitGraph();
+        }
+
+        private void SplitLineCommand()
+        {
+
+        }
+
+        private void ResetPlot()
+        {
+            this.Model.ResetAllAxes();
+            ReDraw();
         }
 
         private void OnPlotLoaded()
