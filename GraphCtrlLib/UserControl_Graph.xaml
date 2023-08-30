@@ -35,6 +35,13 @@
                 </ControlTemplate>
             </oxy:PlotView.DefaultTrackerTemplate>
 
+            <oxy:PlotView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Reset" Command="{Binding ResetCommand}"></MenuItem>
+                    <MenuItem Header="Split line" Command="{Binding SplitCommand}"></MenuItem>
+                </ContextMenu>
+            </oxy:PlotView.ContextMenu>
+
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="Drop">
                     <i:InvokeCommandAction Command="{Binding PlotDrop}" PassEventArgsToCommand="True" />
