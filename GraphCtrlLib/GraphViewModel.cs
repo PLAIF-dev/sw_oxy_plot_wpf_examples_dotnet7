@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using GraphCtrlLib.CustomTrackerManipulator;
 using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
@@ -59,7 +60,7 @@ namespace GraphCtrlLib
             }
         }
 
-        private StaysOpenTrackerManipulator manipulator { get; set; }
+        private StaysOpenTrackerManipulator? manipulator { get; set; }
 
         private string name;
 
@@ -77,9 +78,25 @@ namespace GraphCtrlLib
         //public OxyPlot.Series.LineSeries LineSeries = new OxyPlot.Series.LineSeries();
         //public OxyPlot.Series.ScatterSeries ScatterSeries = new OxyPlot.Series.ScatterSeries();
 
+        public void SetverticalLineTrackerX(double x, string text="")
+        {
+            verticalLineTracker.X = x;
+            verticalLineTracker.Text = text;
+            model.InvalidatePlot(false);
+        }
+
+        private LineAnnotation verticalLineTracker = new LineAnnotation()
+        {
+            Type = LineAnnotationType.Vertical,
+            Color = OxyColors.Red,
+            LineStyle = LineStyle.Solid,
+            TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Right,
+            TextVerticalAlignment = OxyPlot.VerticalAlignment.Bottom,
+        };
+
         public ICommand PlotDrop { get; set; }
 
-        public ICommand PlotDragOver { get; set; }
+        public ICommand? PlotDragOver { get; set; }
         public ICommand PlotLoadedCommand { get; set; }
 
         public GraphViewModel(string strGraphTitle = "Graph") 
@@ -97,6 +114,7 @@ namespace GraphCtrlLib
             name = strGraphTitle;
             model.Title = name;
 
+            model.Annotations.Add(verticalLineTracker);
             PlotDrop = new RelayCommand<DragEventArgs>(PlotView_Drop);
             PlotLoadedCommand = new RelayCommand(OnPlotLoaded);
 

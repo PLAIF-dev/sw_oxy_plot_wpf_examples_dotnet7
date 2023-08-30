@@ -58,6 +58,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -81,6 +82,29 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+            </Grid>
+            <Grid Grid.Row="2" Margin="10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" Text="Time" />
+                <Slider
+                    Grid.Column="1"
+                    LargeChange="0.1"
+                    Maximum="{Binding MaximumTime}"
+                    Minimum="{Binding MinimumTime}"
+                    SmallChange="0.01"
+                    TickPlacement="None"
+                    Value="{Binding CurrentTime}" />
+                <TextBox
+                    Grid.Column="2"
+                    Width="100"
+                    Margin="5,0"
+                    Text="{Binding CurrentTime, StringFormat=N0, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Grid.Column="3" Text="sec" />
             </Grid>
         </Grid>
 
