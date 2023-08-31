@@ -55,11 +55,9 @@ namespace GraphResearch
                     (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
                     Math.Abs(diff.Y) > SystemParameters.MinimumHorizontalDragDistance))
                 {
-                    ListView? listview = null;
-
-                    if (sender != null)
+                    if (sender is ListView)
                     {
-                        listview = sender as ListView;
+                        ListView listview = (ListView)sender;
                         listview.SelectedItems.Clear();
 
                         foreach(var item in temporarilySelectedItems)

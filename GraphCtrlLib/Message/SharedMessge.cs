@@ -16,4 +16,16 @@ namespace GraphCtrlLib.Message
         public int DataIndex { get; set; }
         public object? e { get; set; }
     }
+
+    public class SharedSplitMessage
+    {
+        public int ID { get; set; }
+        public List<string> LineName { get; set; } = new List<string>();
+    }
+
+    public class SharedDeleteMessage
+    {
+        public int ID { get; set; }
+        public string GraphName { get; set; } = string.Empty;
+    }
 }
