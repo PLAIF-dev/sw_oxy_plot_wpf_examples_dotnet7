@@ -24,7 +24,7 @@
             DragOver="PlotView_DragOver"
             Model="{Binding Path=Model}">
 
-            <oxy:PlotView.DefaultTrackerTemplate>
+            <!--<oxy:PlotView.DefaultTrackerTemplate>
                 <ControlTemplate>
                     <oxy:TrackerControl
                         LineExtents="{Binding PlotModel.PlotArea}"
@@ -33,7 +33,7 @@
                         Position="{Binding Position}" 
                         HorizontalLineVisibility="Collapsed"/>
                 </ControlTemplate>
-            </oxy:PlotView.DefaultTrackerTemplate>
+            </oxy:PlotView.DefaultTrackerTemplate>-->
 
             <oxy:PlotView.ContextMenu>
                 <ContextMenu>

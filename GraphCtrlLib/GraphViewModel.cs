@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using GraphCtrlLib.CustomController;
 using GraphCtrlLib.CustomTrackerManipulator;
 using GraphCtrlLib.Message;
 using OxyPlot;
@@ -113,15 +114,7 @@ namespace GraphCtrlLib
         public GraphViewModel(int _id, string strGraphTitle = "Graph") 
         {
             model = new PlotModel();
-            controller = new PlotController();
-            //controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PointsOnlyTrack);
-            //controller.BindMouseDown(OxyMouseButton.Right, OxyModifierKeys.None, 2, PlotCommands.ResetAt);
-
-            controller.BindMouseDown(OxyMouseButton.Left, new DelegatePlotCommand<OxyMouseDownEventArgs>((view, controller, args) =>
-            {
-                manipulator = new StaysOpenTrackerManipulator(view);
-                controller.AddMouseManipulator(view, manipulator, args);           
-            }));
+            controller = new CustomPlotController();
 
             ID = _id;
             name = strGraphTitle;
