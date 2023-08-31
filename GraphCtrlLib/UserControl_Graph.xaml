@@ -38,6 +38,7 @@
             <oxy:PlotView.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Reset" Command="{Binding ResetCommand}"></MenuItem>
+                    <MenuItem Header="Delete" Command="{Binding DeleteCommand}"></MenuItem>
                     <MenuItem Header="Split line" Command="{Binding SplitCommand}"></MenuItem>
                 </ContextMenu>
             </oxy:PlotView.ContextMenu>

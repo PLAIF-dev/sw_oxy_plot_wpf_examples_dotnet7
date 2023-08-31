@@ -131,9 +131,9 @@ namespace DynamicCreateTest
 
             #region Messenger
 
-            var Messageee = WeakReferenceMessenger.Default;
-            Messageee.Register<GraphCtrlLib.Message.SharedMessge>(this, OnMessageReceived);
-
+            var Messeenger = WeakReferenceMessenger.Default;
+            Messeenger.Register<GraphCtrlLib.Message.SharedMessge>(this, OnMessageReceived);
+           
             #endregion
 
         }
@@ -144,8 +144,8 @@ namespace DynamicCreateTest
         /// <param name="message"></param> 메세지
         private void OnMessageReceived(object obj, GraphCtrlLib.Message.SharedMessge message)
         {
-            double DataX = message.DataX;
-            double DataY = message.DataY;
+            double dataX = message.DataX;
+            double dataY = message.DataY;
 
             double sDataX = message.sDataX;
             double sDataY = message.sDataY;
@@ -156,7 +156,7 @@ namespace DynamicCreateTest
                 int index = message.DataIndex;
                 foreach (GraphViewModel _graph in _viewModels)
                 {
-                    _graph.SyncTracker(DataX, DataY, sDataX, sDataY, e, index);
+                    _graph.SyncTracker(dataX, dataY, sDataX, sDataY, e, index);
                 }
             }
         }
@@ -236,7 +236,7 @@ namespace DynamicCreateTest
             {
                 if(_viewModels.Count < 8)
                 {
-                    _viewModels.Add(new GraphViewModel());
+                    _viewModels.Add(new GraphViewModel(_viewModels.Count + 1));
                 }
             }      
         }

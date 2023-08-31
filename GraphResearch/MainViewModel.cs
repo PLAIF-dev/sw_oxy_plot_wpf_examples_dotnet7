@@ -131,8 +131,10 @@ namespace GraphResearch
 
             #region Messenger
 
-            var Messageee = WeakReferenceMessenger.Default;
-            Messageee.Register<GraphCtrlLib.Message.SharedMessge>(this, OnMessageReceived);
+            var Messeenger = WeakReferenceMessenger.Default;
+            Messeenger.Register<GraphCtrlLib.Message.SharedMessge>(this, OnMessageReceived);
+            Messeenger.Register<GraphCtrlLib.Message.SharedSplitMessage>(this, OnSplitMessageReceived);
+            Messeenger.Register<GraphCtrlLib.Message.SharedDeleteMessage>(this, OnDeleteMessageReceived);
 
             #endregion
 
@@ -144,8 +146,8 @@ namespace GraphResearch
         /// <param name="message"></param> 메세지
         private void OnMessageReceived(object obj, GraphCtrlLib.Message.SharedMessge message)
         {
-            double DataX = message.DataX;
-            double DataY = message.DataY;
+            double dataX = message.DataX;
+            double dataY = message.DataY;
 
             double sDataX = message.sDataX;
             double sDataY = message.sDataY;
@@ -156,9 +158,38 @@ namespace GraphResearch
                 int index = message.DataIndex;
                 foreach (GraphViewModel _graph in _viewModels)
                 {
-                    _graph.SyncTracker(DataX, DataY, sDataX, sDataY, e, index);
+                    _graph.SyncTracker(dataX, dataY, sDataX, sDataY, e, index);
                 }
             }
+        }
+
+        private void OnSplitMessageReceived(object ojb, GraphCtrlLib.Message.SharedSplitMessage message)
+        {
+            int graphID = message.ID;
+            List<string> linenamelist = message.LineName;
+            int lineCount = linenamelist.Count;
+
+            if (lineCount > 1)
+            {
+                //1. 현재 Graph 객체를 삭제한다.
+                Delete_Graph(graphID);
+
+                //2. line 수 만큼 Graph 객체를 생성한 후 line을 추가해준다.
+                foreach (var linename in linenamelist)
+                {
+                    var result = GraphDataSets.First(x => x.LineName.Equals(linename));
+                    Add_Graph();
+                    GetLastGraph().AddData(linename, result.xData, result.yData);                  
+                }
+            }
+        }
+
+        private void OnDeleteMessageReceived(object ojb, GraphCtrlLib.Message.SharedDeleteMessage message)
+        {
+            int graphID = message.ID;
+            string graphName = message.GraphName;
+
+            Delete_Graph(graphID);
         }
 
         public double xData = new double();
@@ -222,6 +253,57 @@ namespace GraphResearch
             }
         }
 
+        private void BtnNewClick()
+        {
+            Add_Graph();
+        }
+
+        private void BtnDeleteClick()
+        {
+            Delete_Graph();
+        }
+
+        #region Graph 관리
+
+        private GraphViewModel GetLastGraph()
+        {
+            return _viewModels.Last();    
+        }
+        private void Add_Graph()
+        {
+            if (_viewModels != null)
+            {
+                if(_viewModels.Count <= 0)
+                {
+                    _viewModels.Add(new GraphViewModel(1)); //ID : 1
+                }
+                else
+                {
+                    if (_viewModels.Count < 8)
+                    {
+                        _viewModels.Add(new GraphViewModel(_viewModels.Last().ID + 1));
+                    }
+                }
+            }
+        }
+
+        private void Delete_Graph()
+        {
+            _viewModels.Clear();
+        }
+
+        private void Delete_Graph(int _id)
+        {
+            foreach (GraphViewModel _graph in _viewModels)
+            {
+                if (_graph.ID == _id)
+                {
+                    _viewModels.Remove(_graph);
+                    break;
+                }
+            }
+        }
+
         private void ClearGraph()
         {
             foreach (GraphViewModel _graph in _viewModels)
@@ -229,22 +311,9 @@ namespace GraphResearch
                 _graph.Clear();
             }
         }
+        #endregion
 
-        private void BtnNewClick()
-        {
-            if (_viewModels != null)
-            {
-                if (_viewModels.Count < 8)
-                {
-                    _viewModels.Add(new GraphViewModel());
-                }
-            }
-        }
 
-        private void BtnDeleteClick()
-        {
-            _viewModels.Clear();
-        }
 
         private void ListBoxSeletedChanged()
         {

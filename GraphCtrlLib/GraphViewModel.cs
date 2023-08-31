@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using GraphCtrlLib.CustomTrackerManipulator;
+using GraphCtrlLib.Message;
 using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
@@ -15,6 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Input.Manipulations;
+using System.Windows.Media;
 
 namespace GraphCtrlLib
 {
@@ -70,6 +73,12 @@ namespace GraphCtrlLib
             set { name = value; }
         }
 
+        private int id;
+        public int ID
+        {
+            get => id; set => id = value;
+        }
+
         private Dictionary<string, LineSeries> dicLineGraph = new Dictionary<string, LineSeries>();
 
         //private List<OxyPlot.Series.LineSeries> listSeries;
@@ -99,19 +108,22 @@ namespace GraphCtrlLib
         public ICommand PlotLoadedCommand { get; set; }
         public ICommand ResetCommand { get; set; }
         public ICommand SplitCommand { get; set; }
+        public ICommand DeleteCommand { get; set; }
 
-        public GraphViewModel(string strGraphTitle = "Graph") 
+        public GraphViewModel(int _id, string strGraphTitle = "Graph") 
         {
             model = new PlotModel();
             controller = new PlotController();
             //controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PointsOnlyTrack);
+            //controller.BindMouseDown(OxyMouseButton.Right, OxyModifierKeys.None, 2, PlotCommands.ResetAt);
 
             controller.BindMouseDown(OxyMouseButton.Left, new DelegatePlotCommand<OxyMouseDownEventArgs>((view, controller, args) =>
             {
                 manipulator = new StaysOpenTrackerManipulator(view);
                 controller.AddMouseManipulator(view, manipulator, args);           
             }));
-     
+
+            ID = _id;
             name = strGraphTitle;
             model.Title = name;
 
@@ -120,13 +132,27 @@ namespace GraphCtrlLib
             PlotLoadedCommand = new RelayCommand(OnPlotLoaded);
             ResetCommand = new RelayCommand(ResetPlot);
             SplitCommand = new RelayCommand(SplitLineCommand);
+            DeleteCommand = new RelayCommand(DeleteGraphCommand);
 
             InitGraph();
         }
 
+        private void DeleteGraphCommand()
+        {
+            WeakReferenceMessenger.Default.Send(new SharedDeleteMessage
+            {
+                ID = ID,
+                GraphName = Name,
+            });
+        }
+
         private void SplitLineCommand()
         {
-
+            WeakReferenceMessenger.Default.Send(new SharedSplitMessage
+            {
+                ID = ID,
+                LineName = dicLineGraph.Keys.ToList(),
+            });
         }
 
         private void ResetPlot()
@@ -237,7 +263,7 @@ namespace GraphCtrlLib
         #region Example
         public void ExampleCode()
         {
-            var graph = new GraphViewModel("Test");
+            var graph = new GraphViewModel(0, "Test");
 
             graph.AddAxis("X", AxisPosition.Bottom);
             graph.AddAxis("Y", AxisPosition.Left);
