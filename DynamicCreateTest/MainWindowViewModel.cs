@@ -108,20 +108,20 @@ namespace DynamicCreateTest
             GraphDataSets.Add( new GraphModel.GraphDataSet()
             {
                 Id = 0,
-                xData= xData,
-                yData= yData
+                DataX = xData,
+                DataY = yData
             });
             GraphDataSets.Add(new GraphModel.GraphDataSet()
             {
                 Id = 1,
-                xData = xData2,
-                yData = yData2
+                DataX = xData2,
+                DataY = yData2
             });
             GraphDataSets.Add(new GraphModel.GraphDataSet()
             {
                 Id = 2,
-                xData = xData2,
-                yData = yData2
+                DataX = xData2,
+                DataY = yData2
             });
 
             //Timer 초기화

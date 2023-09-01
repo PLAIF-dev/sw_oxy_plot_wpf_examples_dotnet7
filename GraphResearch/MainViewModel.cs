@@ -106,22 +106,22 @@ namespace GraphResearch
             {
                 Id = 0,
                 LineName = "lineA",
-                xData = xData,
-                yData = yData
+                DataX = xData,
+                DataY = yData
             });
             GraphDataSets.Add(new GraphModel.GraphDataSet()
             {
                 Id = 1,
                 LineName = "lineB",
-                xData = xData2,
-                yData = yData2
+                DataX = xData2,
+                DataY = yData2
             });
             GraphDataSets.Add(new GraphModel.GraphDataSet()
             {
                 Id = 2,
                 LineName = "lineC",
-                xData = xData2,
-                yData = yData2
+                DataX = xData2,
+                DataY = yData2
             });
 
             //Timer 초기화
@@ -179,7 +179,7 @@ namespace GraphResearch
                 {
                     var result = GraphDataSets.First(x => x.LineName.Equals(linename));
                     Add_Graph();
-                    GetLastGraph().AddData(linename, result.xData, result.yData);                  
+                    GetLastGraph().AddData(linename, result.DataX, result.DataY);                  
                 }
             }
         }

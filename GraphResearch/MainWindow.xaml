@@ -35,6 +35,7 @@
             <ListView
                 ItemsSource="{Binding GraphDataSets}"
                 PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
+                PreviewMouseLeftButtonUp="ListView_PreviewMouseLeftButtonUp"
                 PreviewMouseMove="ListView_PreviewMouseMove"
                 SelectedIndex="{Binding SelectedInd}"
                 SelectionMode="Extended">

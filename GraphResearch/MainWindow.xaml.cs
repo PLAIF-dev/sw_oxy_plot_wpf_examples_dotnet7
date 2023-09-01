@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace GraphResearch
 {
@@ -25,21 +26,60 @@ namespace GraphResearch
         // 임시로 선택된 항목을 저장할 리스트
         private List<object> temporarilySelectedItems = new List<object>();
 
+        private object? lastClickedItem = null;
+
         private void ListView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             startpoint = e.GetPosition(null);
 
-            if(sender != null)
+            if(sender is ListView)
             {
-                ListView? listView = sender as ListView;
+                ListView listView = (ListView)sender;
+
                 temporarilySelectedItems.Clear();
 
-                if(listView != null && listView.SelectedItems.Count > 0)
+                if(listView.SelectedItems.Count > 0)
                 {
                     foreach (var item in listView.SelectedItems)
                     {
                         temporarilySelectedItems.Add(item);
                     }
+                }
+
+                if(listView.SelectedItems.Count > 1)
+                {
+                    var clickedItem = listView.InputHitTest(e.GetPosition(listView)) as DependencyObject;
+                    while (clickedItem != null && !(clickedItem is ListViewItem))
+                    {
+                        clickedItem = VisualTreeHelper.GetParent(clickedItem);
+                    }
+                    lastClickedItem = (clickedItem as ListViewItem)?.DataContext;
+
+                    // 이벤트 처리를 중단하여 기본 선택 동작을 막는다.
+                    e.Handled = true;
+                }
+            }
+        }
+        private void ListView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = false;
+
+            if (sender is ListView)
+            {
+                ListView listView = (ListView)sender;
+
+                if (lastClickedItem != null && listView.SelectedItems.Count > 1)
+                {
+                    //모든 선택을 취소하고 마지막에 클릭된 항목만 선택된다.
+                    // 모든 선택을 취소하고 마지막에 클릭된 항목만 선택한다.
+                    listView.SelectedItems.Clear();
+                    listView.SelectedItems.Add(lastClickedItem);
+
+                    // 마지막에 클릭된 항목을 초기화한다.
+                    lastClickedItem = null;
+
+                    // 이벤트 처리를 중단한다.
+                    e.Handled = true;
                 }
             }
         }
@@ -58,11 +98,20 @@ namespace GraphResearch
                     if (sender is ListView)
                     {
                         ListView listview = (ListView)sender;
-                        listview.SelectedItems.Clear();
 
-                        foreach(var item in temporarilySelectedItems)
+                        if(listview.SelectedItems.Count == 1 && temporarilySelectedItems.Count == 1) 
                         {
-                            listview.SelectedItems.Add(item);
+                            //listview의 SelectedItems를 그대로 쓰도록 한다.
+                        }
+                        else
+                        {
+                            //listview의 SelectedItems을 초기화하고 temporarilySelectedItems값으로 다시 채워 놓는다.
+                            listview.SelectedItems.Clear();
+
+                            foreach (var item in temporarilySelectedItems)
+                            {
+                                listview.SelectedItems.Add(item);
+                            }
                         }
 
                         var selectedItems = listview?.SelectedItems;
