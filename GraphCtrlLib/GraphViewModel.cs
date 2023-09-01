@@ -205,7 +205,7 @@ namespace GraphCtrlLib
                     foreach (var graphdata in listItem)
                     {
                         //AddData(graphdata.Id, graphdata.xData, graphdata.yData);
-                        AddData(graphdata.LineName, graphdata.xData, graphdata.yData);
+                        AddData(graphdata.LineName, graphdata.DataX, graphdata.DataY);
                     }
 
                     ReDraw();
