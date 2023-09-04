@@ -37,9 +37,9 @@
 
             <oxy:PlotView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Reset" Command="{Binding ResetCommand}"></MenuItem>
-                    <MenuItem Header="Delete" Command="{Binding DeleteCommand}"></MenuItem>
-                    <MenuItem Header="Split line" Command="{Binding SplitCommand}"></MenuItem>
+                    <MenuItem Header="Reset" Command="{Binding ResetClick}"></MenuItem>
+                    <MenuItem Header="Delete" Command="{Binding DeleteClick}"></MenuItem>
+                    <MenuItem Header="Split line" Command="{Binding SplitClick}"></MenuItem>
                     <MenuItem Header="View in new window" Command="{Binding ViewInNewWindowClick}"></MenuItem>
                 </ContextMenu>
             </oxy:PlotView.ContextMenu>
@@ -50,7 +50,7 @@
                 </i:EventTrigger>
 
                 <i:EventTrigger EventName="Loaded">
-                    <i:InvokeCommandAction Command="{Binding PlotLoadedCommand}" />
+                    <i:InvokeCommandAction Command="{Binding PlotLoaded}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </oxy:PlotView>

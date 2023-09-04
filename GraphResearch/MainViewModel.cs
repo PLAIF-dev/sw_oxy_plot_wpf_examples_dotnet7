@@ -9,11 +9,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using static GraphCtrlLib.GraphModel;
 using System.Windows.Threading;
 using System.Windows.Input;
 using GraphResearch.Interface;
-using System.Security.Cryptography;
 
 namespace GraphResearch
 {
@@ -169,7 +167,7 @@ namespace GraphResearch
 
         private void OnSplitMessageReceived(object ojb, GraphCtrlLib.Message.SharedSplitMessage message)
         {
-            int graphID = message.ID;
+            int graphID = message.GraphID;
             List<string> linenamelist = message.LineName;
             int lineCount = linenamelist.Count;
 
@@ -190,7 +188,7 @@ namespace GraphResearch
 
         private void OnDeleteMessageReceived(object obj, GraphCtrlLib.Message.SharedDeleteMessage message)
         {
-            int graphID = message.ID;
+            int graphID = message.GraphID;
             string graphName = message.GraphName;
 
             Delete_Graph(graphID);
@@ -198,7 +196,7 @@ namespace GraphResearch
 
         private void OnNewWindowMessageReceived(object obj, GraphCtrlLib.Message.SharedNewWindowMessage message)
         {
-            int graphID = message.ID;
+            int graphID = message.GraphID;
             string graphName = message.GraphName;
 
             object? graph = GetGraph(graphID);
@@ -289,18 +287,7 @@ namespace GraphResearch
 
         private GraphViewModel? GetGraph(int _id)
         {
-            GraphViewModel? graph = null;
-
-            foreach (GraphViewModel _graph in _viewModels)
-            {
-                if (_graph.ID == _id)
-                {
-                    graph = _graph;
-                    break;
-                }
-            }
-
-            return graph;
+            return _viewModels.FirstOrDefault(x => x.ID == _id);
         }
         private void Add_Graph()
         {

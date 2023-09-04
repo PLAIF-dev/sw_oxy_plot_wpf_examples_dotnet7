@@ -19,19 +19,19 @@ namespace GraphCtrlLib.Message
 
     public class SharedSplitMessage
     {
-        public int ID { get; set; }
+        public int GraphID { get; set; }
         public List<string> LineName { get; set; } = new List<string>();
     }
 
     public class SharedDeleteMessage
     {
-        public int ID { get; set; }
+        public int GraphID { get; set; }
         public string GraphName { get; set; } = string.Empty;
     }
 
     public class SharedNewWindowMessage
     {
-        public int ID { get; set; }
+        public int GraphID { get; set; }
         public string GraphName { get; set; } = string.Empty;
     }
 }
