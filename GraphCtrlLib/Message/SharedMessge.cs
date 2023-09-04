@@ -28,4 +28,10 @@ namespace GraphCtrlLib.Message
         public int ID { get; set; }
         public string GraphName { get; set; } = string.Empty;
     }
+
+    public class SharedNewWindowMessage
+    {
+        public int ID { get; set; }
+        public string GraphName { get; set; } = string.Empty;
+    }
 }
