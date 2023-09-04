@@ -9,9 +9,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using static GraphCtrlLib.GraphModel;
 using System.Windows.Threading;
 using System.Windows.Input;
+using GraphResearch.Interface;
 
 namespace GraphResearch
 {
@@ -75,6 +75,8 @@ namespace GraphResearch
 
         public const double MaxGraphNum = 50;
 
+        GraphWindowService _GraphWindowService = new GraphWindowService();
+
         public MainViewModel()
         {
             //this.ContentView = (object)new GraphCtrlLib.GraphViewModel();
@@ -135,7 +137,7 @@ namespace GraphResearch
             Messeenger.Register<GraphCtrlLib.Message.SharedMessge>(this, OnMessageReceived);
             Messeenger.Register<GraphCtrlLib.Message.SharedSplitMessage>(this, OnSplitMessageReceived);
             Messeenger.Register<GraphCtrlLib.Message.SharedDeleteMessage>(this, OnDeleteMessageReceived);
-
+            Messeenger.Register<GraphCtrlLib.Message.SharedNewWindowMessage>(this, OnNewWindowMessageReceived);
             #endregion
 
         }
@@ -165,7 +167,7 @@ namespace GraphResearch
 
         private void OnSplitMessageReceived(object ojb, GraphCtrlLib.Message.SharedSplitMessage message)
         {
-            int graphID = message.ID;
+            int graphID = message.GraphID;
             List<string> linenamelist = message.LineName;
             int lineCount = linenamelist.Count;
 
@@ -184,12 +186,25 @@ namespace GraphResearch
             }
         }
 
-        private void OnDeleteMessageReceived(object ojb, GraphCtrlLib.Message.SharedDeleteMessage message)
+        private void OnDeleteMessageReceived(object obj, GraphCtrlLib.Message.SharedDeleteMessage message)
         {
-            int graphID = message.ID;
+            int graphID = message.GraphID;
             string graphName = message.GraphName;
 
             Delete_Graph(graphID);
+        }
+
+        private void OnNewWindowMessageReceived(object obj, GraphCtrlLib.Message.SharedNewWindowMessage message)
+        {
+            int graphID = message.GraphID;
+            string graphName = message.GraphName;
+
+            object? graph = GetGraph(graphID);
+
+            if (graph != null)
+            {
+                _GraphWindowService.ShowWindow(graph);
+            }
         }
 
         public double xData = new double();
@@ -268,6 +283,11 @@ namespace GraphResearch
         private GraphViewModel GetLastGraph()
         {
             return _viewModels.Last();    
+        }
+
+        private GraphViewModel? GetGraph(int _id)
+        {
+            return _viewModels.FirstOrDefault(x => x.ID == _id);
         }
         private void Add_Graph()
         {

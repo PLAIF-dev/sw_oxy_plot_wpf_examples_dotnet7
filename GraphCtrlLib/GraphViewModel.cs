@@ -106,10 +106,11 @@ namespace GraphCtrlLib
 
         public ICommand PlotDrop { get; set; }
         public ICommand? PlotDragOver { get; set; }
-        public ICommand PlotLoadedCommand { get; set; }
-        public ICommand ResetCommand { get; set; }
-        public ICommand SplitCommand { get; set; }
-        public ICommand DeleteCommand { get; set; }
+        public ICommand PlotLoaded { get; set; }
+        public ICommand ResetClick { get; set; }
+        public ICommand SplitClick { get; set; }
+        public ICommand DeleteClick { get; set; }
+        public ICommand ViewInNewWindowClick { get; set; }
 
         public GraphViewModel(int _id, string strGraphTitle = "Graph") 
         {
@@ -121,20 +122,30 @@ namespace GraphCtrlLib
             model.Title = name;
 
             model.Annotations.Add(verticalLineTracker);
-            PlotDrop = new RelayCommand<DragEventArgs>(PlotView_Drop);
-            PlotLoadedCommand = new RelayCommand(OnPlotLoaded);
-            ResetCommand = new RelayCommand(ResetPlot);
-            SplitCommand = new RelayCommand(SplitLineCommand);
-            DeleteCommand = new RelayCommand(DeleteGraphCommand);
+            PlotDrop = new RelayCommand<DragEventArgs>(PlotViewDropCommand);
+            PlotLoaded = new RelayCommand(PlotLoadedCommand);
+            ResetClick = new RelayCommand(ResetPlotCommand);
+            SplitClick = new RelayCommand(SplitLineCommand);
+            DeleteClick = new RelayCommand(DeleteGraphCommand);
+            ViewInNewWindowClick = new RelayCommand(ViewInNewWindowCommand);
 
             InitGraph();
+        }
+
+        private void ViewInNewWindowCommand()
+        {
+            WeakReferenceMessenger.Default.Send(new SharedNewWindowMessage
+            {
+                GraphID = ID,
+                GraphName = Name,
+            });
         }
 
         private void DeleteGraphCommand()
         {
             WeakReferenceMessenger.Default.Send(new SharedDeleteMessage
             {
-                ID = ID,
+                GraphID = ID,
                 GraphName = Name,
             });
         }
@@ -143,18 +154,18 @@ namespace GraphCtrlLib
         {
             WeakReferenceMessenger.Default.Send(new SharedSplitMessage
             {
-                ID = ID,
+                GraphID = ID,
                 LineName = dicLineGraph.Keys.ToList(),
             });
         }
 
-        private void ResetPlot()
+        private void ResetPlotCommand()
         {
             this.Model.ResetAllAxes();
             ReDraw();
         }
 
-        private void OnPlotLoaded()
+        private void PlotLoadedCommand()
         {
             if (manipulator == null)
             {
@@ -193,7 +204,7 @@ namespace GraphCtrlLib
             }  
         }
 
-        private void PlotView_Drop(DragEventArgs? e)
+        private void PlotViewDropCommand(DragEventArgs? e)
         {
             if(e != null)
             {
@@ -373,6 +384,15 @@ namespace GraphCtrlLib
         {
             return dicLineGraph.Values.ToList()[idx].Points.Count;
         }
+        public ElementCollection<Series> GetSeries()
+        {
+            return model.Series;
+        }
+
+        public Dictionary<string, LineSeries> GetDicLineGraph()
+        {
+            return dicLineGraph;
+        }
 
         //New Line
 
@@ -399,6 +419,22 @@ namespace GraphCtrlLib
                 for (int i = 0; i < data1.Count(); i++)
                 {
                     AddData(ls, data1[i], data2[i]);
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void AddData(LineSeries ls, DataPoint[] data)
+        {
+            try
+            {
+                //data1과 data2의 크기 확인
+                for (int i = 0; i < data.Count(); i++)
+                {
+                    AddData(ls, data[i].X, data[i].Y);
                 }
             }
             catch
@@ -541,6 +577,29 @@ namespace GraphCtrlLib
                 ReDraw();
             }
             catch
+            {
+                throw new Exception("올바르지 않은 LineName");
+            }
+        }
+
+        public void AddData(string strLineName, List<DataPoint> data)
+        {
+            try 
+            {
+                LineSeries? ls = new LineSeries();
+                if (dicLineGraph.TryGetValue(strLineName, out ls) == false)
+                {
+                    AddLine(strLineName);
+
+                    if (dicLineGraph.TryGetValue(strLineName, out ls))
+                    {
+                        AddData(ls, data.ToArray());
+                    }
+                }
+
+                ReDraw();
+            }
+            catch 
             {
                 throw new Exception("올바르지 않은 LineName");
             }
