@@ -1,3 +1,4 @@
+using GraphResearch.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,10 +33,8 @@ namespace GraphResearch
         {
             startpoint = e.GetPosition(null);
 
-            if(sender is ListView)
+            if(sender is ListView listView)
             {
-                ListView listView = (ListView)sender;
-
                 temporarilySelectedItems.Clear();
 
                 if(listView.SelectedItems.Count > 0)
@@ -64,10 +63,8 @@ namespace GraphResearch
         {
             e.Handled = false;
 
-            if (sender is ListView)
+            if (sender is ListView listView)
             {
-                ListView listView = (ListView)sender;
-
                 if (lastClickedItem != null && listView.SelectedItems.Count > 1)
                 {
                     //모든 선택을 취소하고 마지막에 클릭된 항목만 선택된다.
@@ -95,10 +92,8 @@ namespace GraphResearch
                     (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
                     Math.Abs(diff.Y) > SystemParameters.MinimumHorizontalDragDistance))
                 {
-                    if (sender is ListView)
+                    if (sender is ListView listview)
                     {
-                        ListView listview = (ListView)sender;
-
                         if(listview.SelectedItems.Count == 1 && temporarilySelectedItems.Count == 1) 
                         {
                             //listview의 SelectedItems를 그대로 쓰도록 한다.

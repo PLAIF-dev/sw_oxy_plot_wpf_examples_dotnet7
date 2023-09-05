@@ -107,19 +107,19 @@ namespace DynamicCreateTest
             GraphDataSets = new ObservableCollection<GraphModel.GraphDataSet>();
             GraphDataSets.Add( new GraphModel.GraphDataSet()
             {
-                Id = 0,
+                ID = 0,
                 DataX = xData,
                 DataY = yData
             });
             GraphDataSets.Add(new GraphModel.GraphDataSet()
             {
-                Id = 1,
+                ID = 1,
                 DataX = xData2,
                 DataY = yData2
             });
             GraphDataSets.Add(new GraphModel.GraphDataSet()
             {
-                Id = 2,
+                ID = 2,
                 DataX = xData2,
                 DataY = yData2
             });

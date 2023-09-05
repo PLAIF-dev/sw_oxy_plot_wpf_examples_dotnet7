@@ -12,6 +12,12 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using System.Windows.Input;
 using GraphResearch.Interface;
+using GraphResearch.Model;
+using System.Windows.Controls;
+using GraphResearch.Utility;
+using System.Drawing;
+using System.Numerics;
+using System.Windows;
 
 namespace GraphResearch
 {
@@ -27,16 +33,14 @@ namespace GraphResearch
         #endregion
 
         #region 변수
-        public ICommand ListBoxChangedCommand { get; set; }
-
-        public ICommand BtnNewClickCommand { get; set; }
-
-        public ICommand BtnDeleteClickCommand { get; set; }
-
+        public ICommand BtnNewClick { get; set; }
+        public ICommand BtnDeleteClick { get; set; }
         public ICommand BtnStartClick { get; set; }
         public ICommand BtnStopClick { get; set; }
         public ICommand BtnClearClick { get; set; }
-
+        public ICommand TreeViewPreviewMouseLeftDown { get; set; }
+        public ICommand TreeViewPreviewMouseLeftUp { get; set; }
+        public ICommand TreeViewPreviewMouseMove { get; set; }
 
         private ObservableCollection<GraphViewModel> _viewModels = new ObservableCollection<GraphViewModel>();
 
@@ -68,6 +72,12 @@ namespace GraphResearch
             }
         }
 
+        public List<TreeNode> Roots { get; set; }
+        
+        private List<PositionNode> temporailySelectedPostions = new();
+
+        private System.Windows.Point startpoint = new();
+
         public ObservableCollection<GraphModel.GraphDataSet> GraphDataSets { get; set; }
 
         private DispatcherTimer timer;
@@ -79,14 +89,14 @@ namespace GraphResearch
 
         public MainViewModel()
         {
-            //this.ContentView = (object)new GraphCtrlLib.GraphViewModel();
-
-            ListBoxChangedCommand = new RelayCommand(ListBoxSeletedChanged);
-            BtnNewClickCommand = new RelayCommand(BtnNewClick);
-            BtnDeleteClickCommand = new RelayCommand(BtnDeleteClick);
+            BtnNewClick = new RelayCommand(BtnNewCommand);
+            BtnDeleteClick = new RelayCommand(BtnDeleteCommand);
             BtnStartClick = new RelayCommand(BtnStartCommand);
             BtnStopClick = new RelayCommand(BtnStopCommand);
             BtnClearClick = new RelayCommand(BtnClearCommand);
+            TreeViewPreviewMouseLeftDown = new RelayCommand<object>(TreeViewPreviewMouseLeftDownCommand);
+            TreeViewPreviewMouseLeftUp = new RelayCommand<object>(TreeViewPreviewMouseLeftUpCommand);
+            TreeViewPreviewMouseMove = new RelayCommand<object>(TreeViewPreviewMouseMoveCommand);
 
             List<double> xData = new List<double>();
             List<double> yData = new List<double>();
@@ -106,21 +116,21 @@ namespace GraphResearch
             GraphDataSets = new ObservableCollection<GraphModel.GraphDataSet>();
             GraphDataSets.Add(new GraphModel.GraphDataSet()
             {
-                Id = 0,
+                ID = 0,
                 LineName = "lineA",
                 DataX = xData,
                 DataY = yData
             });
             GraphDataSets.Add(new GraphModel.GraphDataSet()
             {
-                Id = 1,
+                ID = 1,
                 LineName = "lineB",
                 DataX = xData2,
                 DataY = yData2
             });
             GraphDataSets.Add(new GraphModel.GraphDataSet()
             {
-                Id = 2,
+                ID = 2,
                 LineName = "lineC",
                 DataX = xData2,
                 DataY = yData2
@@ -130,6 +140,55 @@ namespace GraphResearch
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(5);
             timer.Tick += CallBackTimer;
+
+            #region TreeNode
+            Roots = new();
+
+            TreeNode Root = new()
+            {
+                Name = "Joint",
+            };
+
+            Root.Children.Add( new PositionNode()
+            {
+                Name = "joint1",
+                PositionsX = xData,
+                PositionsY = yData
+            });
+            Root.Children.Add(new PositionNode()
+            {
+                Name = "joint2",
+                PositionsX = xData2,
+                PositionsY = yData2
+            });
+            Root.Children.Add(new PositionNode()
+            {
+                Name = "joint3",
+                PositionsX = xData,
+                PositionsY = yData
+            });
+            Root.Children.Add(new PositionNode()
+            {
+                Name = "joint4",
+                PositionsX = xData2,
+                PositionsY = yData2
+            });
+            Root.Children.Add(new PositionNode()
+            {
+                Name = "joint5",
+                PositionsX = xData,
+                PositionsY = yData
+            });
+            Root.Children.Add(new PositionNode()
+            {
+                Name = "joint6",
+                PositionsX = xData2,
+                PositionsY = yData2
+            });
+
+            Roots.Add(Root);
+
+            #endregion
 
             #region Messenger
 
@@ -233,6 +292,90 @@ namespace GraphResearch
             //}
         }
 
+        private void TreeViewPreviewMouseLeftDownCommand(object? parameter)
+        {    
+            try
+            {
+                if (parameter is MouseButtonEventArgs args)
+                {
+                    startpoint = args.GetPosition(null);
+
+                    //if (args.Source is TreeView treeView)
+                    //{
+                    //    temporailySelectedPostions.Clear();
+                    //    foreach (var item in treeView.ItemsSource)
+                    //    {
+                    //        if (item is TreeNode treeNode)
+                    //        {
+                    //            temporailySelectedPostions = TreeNodeUtility.TravelNode(treeNode);
+                    //        }
+                    //    }
+                    //}
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void TreeViewPreviewMouseLeftUpCommand(object? parameter)
+        {
+
+        }
+
+        private void TreeViewPreviewMouseMoveCommand(object? parameter)
+        {
+            try
+            {
+                if (parameter is MouseEventArgs args)
+                {
+                    System.Windows.Point mousePos = args.GetPosition(null);
+                    System.Windows.Vector diff = startpoint - mousePos;
+
+                    if (args.LeftButton == MouseButtonState.Pressed &&
+                        (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                        Math.Abs(diff.Y) > SystemParameters.MinimumHorizontalDragDistance))
+                    {
+                        if (args.Source is TreeView treeView)
+                        {
+                            temporailySelectedPostions.Clear();
+
+                            if(treeView.SelectedItem is TreeNode treeNode)
+                            {
+                                temporailySelectedPostions = TreeNodeUtility.TravelNode(treeNode);
+                            }
+
+                            if(temporailySelectedPostions.Count > 0)
+                            {
+                                List<object> graphDataSets = new();
+
+                                foreach(var item in temporailySelectedPostions)
+                                {
+                                    GraphModel.GraphDataSet graphDataSet = new()
+                                    {
+                                        ID = 0,
+                                        LineName = item.Name,
+                                        DataX = item.PositionsX,
+                                        DataY = item.PositionsY,
+                                    };
+                                    graphDataSets.Add(graphDataSet);
+                                }
+                                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() =>
+                                {
+                                    DragDrop.DoDragDrop(treeView, graphDataSets, DragDropEffects.Copy);
+                                }));
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                
+            }
+        }
+
         private void BtnStartCommand()
         {
             if (_viewModels != null)
@@ -268,12 +411,12 @@ namespace GraphResearch
             }
         }
 
-        private void BtnNewClick()
+        private void BtnNewCommand()
         {
             Add_Graph();
         }
 
-        private void BtnDeleteClick()
+        private void BtnDeleteCommand()
         {
             Delete_Graph();
         }
@@ -332,57 +475,6 @@ namespace GraphResearch
             }
         }
         #endregion
-
-
-
-        private void ListBoxSeletedChanged()
-        {
-            //double[] xData = new double[Convert.ToInt32(MaxGraphNum)];
-            //double[] yData = new double[Convert.ToInt32(MaxGraphNum)];
-
-            //double[] xData2 = new double[Convert.ToInt32(MaxGraphNum)];
-            //double[] yData2 = new double[Convert.ToInt32(MaxGraphNum)];
-
-            //if (_viewModels.Count > 0)
-            //{
-            //    foreach (GraphViewModel _graph in _viewModels)
-            //    {
-            //        _graph.Clear();
-            //    }
-
-            //    switch (SelectedInd)
-            //    {
-            //        case 0:
-            //            for (int i = 0; i < MaxGraphNum; i++)
-            //            {
-            //                xData[i] = Math.Sin(i * 0.1f);
-            //                yData[i] = Math.Cos(i * 0.1f);
-
-            //                xData2[i] = Math.Sin(i * 0.1f) * 2;
-            //                yData2[i] = Math.Cos(i * 0.1f) * 2;
-            //            }
-            //            break;
-            //        case 1:
-            //            for (int i = 0; i < MaxGraphNum; i++)
-            //            {
-            //                xData[i] = i;
-            //                yData[i] = Math.Cos(i * 0.1f);
-
-            //                xData2[i] = i;
-            //                yData2[i] = Math.Cos(i * 0.1f) * 1000;
-            //            }
-            //            break;
-            //        case 2:
-            //            return;
-            //    }
-
-            //    foreach (GraphViewModel _graph in _viewModels)
-            //    {
-            //        _graph.AddData(0, xData, yData);
-            //        _graph.AddData(1, xData2, yData2);
-            //    }
-            //}
-        }
 
         private double currentTime = 0.0;
         public double CurrentTime

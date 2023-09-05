@@ -6,11 +6,11 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:GraphResearch"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:GraphResearch.Model"
     Title="MainWindow"
     Width="1200"
     Height="800"
     mc:Ignorable="d">
-
 
     <Window.Resources>
         <ResourceDictionary>
@@ -32,7 +32,13 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
             <ListView
+                Grid.Row="0"
                 ItemsSource="{Binding GraphDataSets}"
                 PreviewMouseLeftButtonDown="ListView_PreviewMouseLeftButtonDown"
                 PreviewMouseLeftButtonUp="ListView_PreviewMouseLeftButtonUp"
@@ -42,17 +48,33 @@
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Id}" />
+                        <TextBlock Text="{Binding ID}" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
-
-                <!--<i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding ListBoxChangedCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>-->
-
             </ListView>
+
+            <TreeView Grid.Row="1" ItemsSource="{Binding Roots}" >
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type model:TreeNode}" ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type model:PositionNode}" ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                </TreeView.Resources>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                        <i:InvokeCommandAction Command="{Binding TreeViewPreviewMouseLeftDown}" PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                        <i:InvokeCommandAction Command="{Binding TreeViewPreviewMouseLeftUp}" PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseMove">
+                        <i:InvokeCommandAction Command="{Binding TreeViewPreviewMouseMove}" PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TreeView>
         </Grid>
 
         <Grid Grid.Column="1">
@@ -64,8 +86,8 @@
 
             <Grid Grid.Row="0">
                 <StackPanel Background="White" Orientation="Horizontal">
-                    <Button Command="{Binding BtnNewClickCommand}" Content="New" />
-                    <Button Command="{Binding BtnDeleteClickCommand}" Content="Delete" />
+                    <Button Command="{Binding BtnNewClick}" Content="New" />
+                    <Button Command="{Binding BtnDeleteClick}" Content="Delete" />
                 </StackPanel>
             </Grid>
 
@@ -133,7 +155,6 @@
             </StackPanel>
         </Grid>
     </Grid>
-
 </Window>
 
 
