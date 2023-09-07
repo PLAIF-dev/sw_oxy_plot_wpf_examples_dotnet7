@@ -18,6 +18,7 @@ using GraphResearch.Utility;
 using System.Drawing;
 using System.Numerics;
 using System.Windows;
+using static GraphCtrlLib.GraphModel;
 
 namespace GraphResearch
 {
@@ -41,6 +42,10 @@ namespace GraphResearch
         public ICommand TreeViewPreviewMouseLeftDown { get; set; }
         public ICommand TreeViewPreviewMouseLeftUp { get; set; }
         public ICommand TreeViewPreviewMouseMove { get; set; }
+
+        public ICommand MultiTreeViewPreviewMouseLeftDown { get; set; }
+        public ICommand MultiTreeViewPreviewMouseLeftUp { get; set; }
+        public ICommand MultiTreeViewPreviewMouseMove { get; set; }
 
         private ObservableCollection<GraphViewModel> _viewModels = new ObservableCollection<GraphViewModel>();
 
@@ -97,6 +102,10 @@ namespace GraphResearch
             TreeViewPreviewMouseLeftDown = new RelayCommand<object>(TreeViewPreviewMouseLeftDownCommand);
             TreeViewPreviewMouseLeftUp = new RelayCommand<object>(TreeViewPreviewMouseLeftUpCommand);
             TreeViewPreviewMouseMove = new RelayCommand<object>(TreeViewPreviewMouseMoveCommand);
+            MultiTreeViewPreviewMouseLeftDown = new RelayCommand<object>(MultiTreeViewPreviewMouseLeftDownCommand);
+            MultiTreeViewPreviewMouseLeftUp = new RelayCommand<object>(MultiTreeViewPreviewMouseLeftUpCommand);
+            MultiTreeViewPreviewMouseMove = new RelayCommand<object>(MultiTreeViewPreviewMouseMoveCommand);
+
 
             List<double> xData = new List<double>();
             List<double> yData = new List<double>();
@@ -376,6 +385,113 @@ namespace GraphResearch
             }
         }
 
+        private void MultiTreeViewPreviewMouseLeftDownCommand(object? parameter)
+        {
+            try
+            {
+                if (parameter is MouseButtonEventArgs args)
+                {
+                    startpoint = args.GetPosition(null);
+
+                    if (args.Source is MultiSelectTreeView treeView)
+                    {
+                        temporailySelectedPostions.Clear();
+
+                        if (treeView.SelectedItems.Count > 0)
+                        {
+                            foreach (var item in treeView.SelectedItems)
+                            {
+                                List<PositionNode> templist = TreeNodeUtility.TravelNode((TreeNode)item);
+                                foreach (var item2 in templist) 
+                                {
+                                    if( !temporailySelectedPostions.Exists(x => x.Name == item2.Name))
+                                    {
+                                        temporailySelectedPostions.Add(item2);
+                                    }      
+                                }           
+                            }
+                        }
+
+                        //if(treeView.SelectedItems.Count > 1) 
+                        //{
+                        //    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() =>
+                        //    {
+                        //        var clickedItem = treeView.InputBindings(args.GetPosition(treeView)) as DependencyObject;
+                        //    }));
+                        //}
+
+                        //foreach (var item in treeView.ItemsSource)
+                        //{
+                        //    if (item is TreeNode treeNode)
+                        //    {
+                        //        temporailySelectedPostions = TreeNodeUtility.TravelNode(treeNode);
+                        //    }
+                        //}
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void MultiTreeViewPreviewMouseLeftUpCommand(object? parameter)
+        {
+
+        }
+
+        private void MultiTreeViewPreviewMouseMoveCommand(object? parameter)
+        {
+            try
+            {
+                if (parameter is MouseEventArgs args)
+                {
+                    System.Windows.Point mousePos = args.GetPosition(null);
+                    System.Windows.Vector diff = startpoint - mousePos;
+
+                    if (args.LeftButton == MouseButtonState.Pressed &&
+                        (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                        Math.Abs(diff.Y) > SystemParameters.MinimumHorizontalDragDistance))
+                    {
+                        if (args.Source is MultiSelectTreeView treeView)
+                        {
+                            //temporailySelectedPostions.Clear();
+
+                            //foreach(var item in treeView.SelectedItems)
+                            //{
+                            //    temporailySelectedPostions = TreeNodeUtility.TravelNode((TreeNode)item);
+                            //}
+
+                            if (temporailySelectedPostions.Count > 0)
+                            {
+                                List<object> graphDataSets = new();
+
+                                foreach (var item in temporailySelectedPostions)
+                                {
+                                    GraphModel.GraphDataSet graphDataSet = new()
+                                    {
+                                        ID = 0,
+                                        LineName = item.Name,
+                                        DataX = item.PositionsX,
+                                        DataY = item.PositionsY,
+                                    };
+                                    graphDataSets.Add(graphDataSet);
+                                }
+                                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new Action(() =>
+                                {
+                                    DragDrop.DoDragDrop(treeView, graphDataSets, DragDropEffects.Copy);
+                                }));
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+
+            }
+        }
         private void BtnStartCommand()
         {
             if (_viewModels != null)

@@ -2,6 +2,7 @@
     x:Class="GraphResearch.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:System.Windows.Controls;assembly=MultiSelectTreeView"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:GraphResearch"
@@ -35,6 +36,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <ListView
@@ -53,7 +55,7 @@
                 </ListView.ItemTemplate>
             </ListView>
 
-            <TreeView Grid.Row="1" ItemsSource="{Binding Roots}" >
+            <TreeView Grid.Row="1" ItemsSource="{Binding Roots}">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type model:TreeNode}" ItemsSource="{Binding Children}">
                         <TextBlock Text="{Binding Name}" />
@@ -62,6 +64,13 @@
                         <TextBlock Text="{Binding Name}" />
                     </HierarchicalDataTemplate>
                 </TreeView.Resources>
+
+                <TreeView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Test" />
+                        <MenuItem Header="Test2" />
+                    </ContextMenu>
+                </TreeView.ContextMenu>
 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
@@ -75,6 +84,48 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </TreeView>
+
+            <Controls:MultiSelectTreeView
+                Grid.Row="2"
+                ItemsSource="{Binding Roots}"
+                PreviewMouseLeftButtonDown="MultiSelectTreeView_PreviewMouseLeftButtonDown"
+                PreviewMouseLeftButtonUp="MultiSelectTreeView_PreviewMouseLeftButtonUp"
+                PreviewMouseMove="MultiSelectTreeView_PreviewMouseMove"
+                PreviewMouseDoubleClick="MultiSelectTreeView_PreviewMouseDoubleClick">
+
+                <Controls:MultiSelectTreeView.Resources>
+
+                    <HierarchicalDataTemplate DataType="{x:Type model:TreeNode}" ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+                    <HierarchicalDataTemplate DataType="{x:Type model:PositionNode}" ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Name}" />
+                    </HierarchicalDataTemplate>
+
+                </Controls:MultiSelectTreeView.Resources>
+
+                <Controls:MultiSelectTreeView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Test" />
+                        <MenuItem Header="Test2" />
+                    </ContextMenu>
+                </Controls:MultiSelectTreeView.ContextMenu>
+
+                <!--<i:Interaction.Triggers>
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                        <i:InvokeCommandAction Command="{Binding MultiTreeViewPreviewMouseLeftDown}" PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseLeftButtonUp">
+                        <i:InvokeCommandAction Command="{Binding MultiTreeViewPreviewMouseLeftUp}" PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="PreviewMouseMove">
+                        <i:InvokeCommandAction Command="{Binding MultiTreeViewPreviewMouseMove}" PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>-->
+
+            </Controls:MultiSelectTreeView>
+
+
         </Grid>
 
         <Grid Grid.Column="1">

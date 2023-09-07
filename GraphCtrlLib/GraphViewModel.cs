@@ -130,6 +130,27 @@ namespace GraphCtrlLib
             ViewInNewWindowClick = new RelayCommand(ViewInNewWindowCommand);
 
             InitGraph();
+
+            #region Messenger
+
+            var Messeenger = WeakReferenceMessenger.Default;
+            Messeenger.Register<SharedAddLineMessage>(this, OnAddLineMessageReceived);
+            #endregion
+        }
+
+        private void OnAddLineMessageReceived(object obj, SharedAddLineMessage message)
+        {
+            List<GraphModel.GraphDataSet>? listItem = message.GraphDataSets.Cast<GraphModel.GraphDataSet>().ToList();
+
+            if (listItem != null)
+            {
+                foreach (var graphdata in listItem)
+                {
+                    AddData(graphdata.LineName, graphdata.DataX, graphdata.DataY);
+                }
+
+                ReDraw();
+            }        
         }
 
         private void ViewInNewWindowCommand()
