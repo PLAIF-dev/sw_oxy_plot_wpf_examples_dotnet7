@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace GraphCtrlLib.Message
 {
+
+    #region Meesage from graph to ...
     public class SharedMessge
     {
         public double DataX { get; set; }
@@ -34,4 +36,15 @@ namespace GraphCtrlLib.Message
         public int GraphID { get; set; }
         public string GraphName { get; set; } = string.Empty;
     }
+
+    #endregion
+
+    #region Message to Graph from ...
+
+    public class SharedAddLineMessage
+    {
+        public List<object> GraphDataSets { get; set; } = new();
+    }
+
+    #endregion
 }
