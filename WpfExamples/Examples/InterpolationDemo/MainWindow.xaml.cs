@@ -7,16 +7,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using OxyPlot;
+using OxyPlot.Series;
+using WpfExamples;
+
 namespace InterpolationDemo
 {
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using OxyPlot;
-    using OxyPlot.Series;
-
-    using WpfExamples;
-    using System;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

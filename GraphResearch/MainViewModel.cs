@@ -1,24 +1,20 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using GraphCtrlLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Threading;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using GraphCtrlLib;
+using GraphCtrlLib.Message;
 using GraphResearch.Interface;
 using GraphResearch.Model;
-using System.Windows.Controls;
 using GraphResearch.Utility;
-using System.Drawing;
-using System.Numerics;
-using System.Windows;
-using static GraphCtrlLib.GraphModel;
 
 namespace GraphResearch
 {
@@ -81,7 +77,7 @@ namespace GraphResearch
         
         private List<PositionNode> temporailySelectedPostions = new();
 
-        private System.Windows.Point startpoint = new();
+        private Point startpoint = new();
 
         public ObservableCollection<GraphModel.GraphDataSet> GraphDataSets { get; set; }
 
@@ -202,10 +198,10 @@ namespace GraphResearch
             #region Messenger
 
             var Messeenger = WeakReferenceMessenger.Default;
-            Messeenger.Register<GraphCtrlLib.Message.SharedMessge>(this, OnMessageReceived);
-            Messeenger.Register<GraphCtrlLib.Message.SharedSplitMessage>(this, OnSplitMessageReceived);
-            Messeenger.Register<GraphCtrlLib.Message.SharedDeleteMessage>(this, OnDeleteMessageReceived);
-            Messeenger.Register<GraphCtrlLib.Message.SharedNewWindowMessage>(this, OnNewWindowMessageReceived);
+            Messeenger.Register<SharedMessge>(this, OnMessageReceived);
+            Messeenger.Register<SharedSplitMessage>(this, OnSplitMessageReceived);
+            Messeenger.Register<SharedDeleteMessage>(this, OnDeleteMessageReceived);
+            Messeenger.Register<SharedNewWindowMessage>(this, OnNewWindowMessageReceived);
             #endregion
 
         }
@@ -214,7 +210,7 @@ namespace GraphResearch
         /// </summary>
         /// <param name="obj"></param> 객체 전송자
         /// <param name="message"></param> 메세지
-        private void OnMessageReceived(object obj, GraphCtrlLib.Message.SharedMessge message)
+        private void OnMessageReceived(object obj, SharedMessge message)
         {
             double dataX = message.DataX;
             double dataY = message.DataY;
@@ -233,7 +229,7 @@ namespace GraphResearch
             }
         }
 
-        private void OnSplitMessageReceived(object ojb, GraphCtrlLib.Message.SharedSplitMessage message)
+        private void OnSplitMessageReceived(object ojb, SharedSplitMessage message)
         {
             int graphID = message.GraphID;
             List<string> linenamelist = message.LineName;
@@ -254,7 +250,7 @@ namespace GraphResearch
             }
         }
 
-        private void OnDeleteMessageReceived(object obj, GraphCtrlLib.Message.SharedDeleteMessage message)
+        private void OnDeleteMessageReceived(object obj, SharedDeleteMessage message)
         {
             int graphID = message.GraphID;
             string graphName = message.GraphName;
@@ -262,7 +258,7 @@ namespace GraphResearch
             Delete_Graph(graphID);
         }
 
-        private void OnNewWindowMessageReceived(object obj, GraphCtrlLib.Message.SharedNewWindowMessage message)
+        private void OnNewWindowMessageReceived(object obj, SharedNewWindowMessage message)
         {
             int graphID = message.GraphID;
             string graphName = message.GraphName;
@@ -339,8 +335,8 @@ namespace GraphResearch
             {
                 if (parameter is MouseEventArgs args)
                 {
-                    System.Windows.Point mousePos = args.GetPosition(null);
-                    System.Windows.Vector diff = startpoint - mousePos;
+                    Point mousePos = args.GetPosition(null);
+                    Vector diff = startpoint - mousePos;
 
                     if (args.LeftButton == MouseButtonState.Pressed &&
                         (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
@@ -447,8 +443,8 @@ namespace GraphResearch
             {
                 if (parameter is MouseEventArgs args)
                 {
-                    System.Windows.Point mousePos = args.GetPosition(null);
-                    System.Windows.Vector diff = startpoint - mousePos;
+                    Point mousePos = args.GetPosition(null);
+                    Vector diff = startpoint - mousePos;
 
                     if (args.LeftButton == MouseButtonState.Pressed &&
                         (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||

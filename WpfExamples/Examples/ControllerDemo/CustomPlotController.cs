@@ -7,9 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using OxyPlot;
+
 namespace ControllerDemo
 {
-    using OxyPlot;
 
     public class CustomPlotController : PlotController
     {

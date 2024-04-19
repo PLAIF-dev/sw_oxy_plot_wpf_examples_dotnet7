@@ -4,10 +4,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+
 namespace AnimationsDemo
 {
-    using System;
-    using System.Collections.Generic;
 
     public class AnimationFrame
     {

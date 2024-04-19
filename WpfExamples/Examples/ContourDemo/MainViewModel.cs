@@ -7,14 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using OxyPlot;
+using OxyPlot.Series;
+
 namespace ContourDemo
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel;
-
-    using OxyPlot;
-    using OxyPlot.Series;
 
     /// <summary>
     /// The main view model.

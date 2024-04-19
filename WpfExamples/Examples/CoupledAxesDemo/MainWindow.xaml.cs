@@ -7,16 +7,15 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Windows;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+using WpfExamples;
+
 namespace CoupledAxesDemo
 {
-    using System;
-    using System.Windows;
-
-    using OxyPlot;
-    using OxyPlot.Axes;
-    using OxyPlot.Series;
-
-    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

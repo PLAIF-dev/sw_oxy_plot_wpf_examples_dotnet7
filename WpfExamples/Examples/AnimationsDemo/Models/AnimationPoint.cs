@@ -4,9 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics;
+
 namespace AnimationsDemo
 {
-    using System.Diagnostics;
 
     [DebuggerDisplay("{X} / {Y} (IsVisible = {IsVisible})")]
     public class AnimationPoint

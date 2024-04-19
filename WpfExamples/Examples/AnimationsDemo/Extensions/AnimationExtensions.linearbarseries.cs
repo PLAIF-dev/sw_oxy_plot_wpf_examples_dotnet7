@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using OxyPlot;
+using OxyPlot.Series;
+
 namespace AnimationsDemo
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-
-    using OxyPlot;
-    using OxyPlot.Series;
 
     public static partial class AnimationExtensions
     {

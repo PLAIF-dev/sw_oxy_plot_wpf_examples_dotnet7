@@ -7,11 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+
 namespace ControllerDemo
 {
-    using OxyPlot;
-    using OxyPlot.Axes;
-    using OxyPlot.Series;
 
     /// <summary>
     /// Represents the view-model for the main window.

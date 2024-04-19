@@ -4,7 +4,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:local="clr-namespace:GraphCtrlLib"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:oxy="http://oxyplot.org/wpf"
     x:Name="graph"
@@ -37,10 +36,10 @@
 
             <oxy:PlotView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Reset" Command="{Binding ResetClick}"></MenuItem>
-                    <MenuItem Header="Delete" Command="{Binding DeleteClick}"></MenuItem>
-                    <MenuItem Header="Split line" Command="{Binding SplitClick}"></MenuItem>
-                    <MenuItem Header="View in new window" Command="{Binding ViewInNewWindowClick}"></MenuItem>
+                    <MenuItem Header="Reset" Command="{Binding ResetClick}" />
+                    <MenuItem Header="Delete" Command="{Binding DeleteClick}" />
+                    <MenuItem Header="Split line" Command="{Binding SplitClick}" />
+                    <MenuItem Header="View in new window" Command="{Binding ViewInNewWindowClick}" />
                 </ContextMenu>
             </oxy:PlotView.ContextMenu>
 

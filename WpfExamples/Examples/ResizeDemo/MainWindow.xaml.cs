@@ -7,15 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+using WpfExamples;
+
 namespace ResizeDemo
 {
-    using System;
-
-    using OxyPlot;
-    using OxyPlot.Axes;
-    using OxyPlot.Series;
-
-    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

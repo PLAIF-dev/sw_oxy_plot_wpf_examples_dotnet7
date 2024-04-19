@@ -7,9 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using WpfExamples;
+
 namespace LegendsDemo
 {
-    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

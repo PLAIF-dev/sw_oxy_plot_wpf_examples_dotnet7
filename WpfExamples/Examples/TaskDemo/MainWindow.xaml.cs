@@ -7,12 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.ComponentModel;
+using System.Windows;
+using WpfExamples;
+
 namespace TaskDemo
 {
-    using System.ComponentModel;
-    using System.Windows;
-
-    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

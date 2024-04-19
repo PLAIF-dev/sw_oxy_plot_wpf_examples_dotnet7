@@ -4,11 +4,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Drawing;
+using System.Runtime.InteropServices;
+
 namespace WpfExamples
 {
-    using System;
-    using System.Drawing;
-    using System.Runtime.InteropServices;
 
     public static class ScreenCapture
     {

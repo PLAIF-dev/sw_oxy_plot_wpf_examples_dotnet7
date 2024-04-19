@@ -1,4 +1,12 @@
-﻿using CommunityToolkit.Mvvm.Input;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using GraphCtrlLib.CustomController;
 using GraphCtrlLib.CustomTrackerManipulator;
@@ -8,17 +16,8 @@ using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Input.Manipulations;
-using System.Windows.Media;
+using HorizontalAlignment = OxyPlot.HorizontalAlignment;
+using VerticalAlignment = OxyPlot.VerticalAlignment;
 
 namespace GraphCtrlLib
 {
@@ -100,8 +99,8 @@ namespace GraphCtrlLib
             Type = LineAnnotationType.Vertical,
             Color = OxyColors.Red,
             LineStyle = LineStyle.Solid,
-            TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Right,
-            TextVerticalAlignment = OxyPlot.VerticalAlignment.Bottom,
+            TextHorizontalAlignment = HorizontalAlignment.Right,
+            TextVerticalAlignment = VerticalAlignment.Bottom,
         };
 
         public ICommand PlotDrop { get; set; }
@@ -230,7 +229,7 @@ namespace GraphCtrlLib
             if(e != null)
             {
                 var items = e.Data.GetData(typeof(List<object>));
-                List<GraphModel.GraphDataSet>? listItem = ((System.Collections.IEnumerable)items).Cast<GraphModel.GraphDataSet>().ToList();
+                List<GraphModel.GraphDataSet>? listItem = ((IEnumerable)items).Cast<GraphModel.GraphDataSet>().ToList();
 
                 if (listItem != null)
                 {
@@ -360,9 +359,9 @@ namespace GraphCtrlLib
             AddLine(strLineTitle, OxyColors.Automatic, LineThickness);
         }
 
-        public void AddAxis(string strTitle, OxyPlot.Axes.AxisPosition position = AxisPosition.None, bool _PositionAtZeroCrossing = false)
+        public void AddAxis(string strTitle, AxisPosition position = AxisPosition.None, bool _PositionAtZeroCrossing = false)
         {
-            LinearAxis Axis = new OxyPlot.Axes.LinearAxis()
+            LinearAxis Axis = new LinearAxis()
             {
                 MajorGridlineStyle = LineStyle.Solid,
                 MinorGridlineStyle = LineStyle.Dot,

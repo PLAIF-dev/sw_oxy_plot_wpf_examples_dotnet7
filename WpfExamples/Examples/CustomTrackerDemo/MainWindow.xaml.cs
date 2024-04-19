@@ -7,15 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Windows;
+using OxyPlot;
+using OxyPlot.Series;
+using WpfExamples;
+
 namespace CustomTrackerDemo
 {
-    using System.Collections.Generic;
-    using System.Windows;
-
-    using OxyPlot;
-    using OxyPlot.Series;
-
-    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

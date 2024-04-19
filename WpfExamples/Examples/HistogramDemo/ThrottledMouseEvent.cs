@@ -9,12 +9,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media;
+
 namespace HistogramDemo
 {
-    using System;
-    using System.Windows;
-    using System.Windows.Input;
-    using System.Windows.Media;
 
     /// <summary>
     /// Creates a 'throttled' MouseMove event which ensures that the UI

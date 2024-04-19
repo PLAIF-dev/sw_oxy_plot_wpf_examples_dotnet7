@@ -7,10 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Windows.Input;
+
 namespace WpfExamples
 {
-    using System;
-    using System.Windows.Input;
 
     /// <summary>
     /// Represents a delegate command.
