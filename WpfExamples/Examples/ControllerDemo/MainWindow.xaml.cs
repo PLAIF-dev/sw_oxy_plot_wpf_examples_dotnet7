@@ -7,9 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using WpfExamples;
+
 namespace ControllerDemo
 {
-    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -5,11 +5,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System;
+
 namespace AnimationsDemo
 {
-    using System;
-
-    using AnimationsDemo;
 
     public class CircleEase : IEasingFunction
     {

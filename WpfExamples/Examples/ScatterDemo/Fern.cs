@@ -8,12 +8,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media;
+
 namespace ScatterDemo
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Windows;
-    using System.Windows.Media;
 
     /// <summary>
     /// Barnesley fern point generator

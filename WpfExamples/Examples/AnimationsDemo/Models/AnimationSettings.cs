@@ -5,9 +5,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System;
+
 namespace AnimationsDemo
 {
-    using System;
 
     public class AnimationSettings
     {

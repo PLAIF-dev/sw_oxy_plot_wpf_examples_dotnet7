@@ -7,19 +7,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Windows;
+using System.Windows.Input;
+using OxyPlot;
+using OxyPlot.Series;
+using WpfExamples;
+using DelegateCommand = PropertyTools.Wpf.DelegateCommand;
+
 namespace ContextMenuDemo
 {
-    using System;
-    using System.Windows;
-    using System.Windows.Input;
 
-    using OxyPlot;
-    using OxyPlot.Series;
-
-    using WpfExamples;
-
-    using DelegateCommand = PropertyTools.Wpf.DelegateCommand;
-    using ICommand = System.Windows.Input.ICommand;
+    using DelegateCommand = DelegateCommand;
+    using ICommand = ICommand;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

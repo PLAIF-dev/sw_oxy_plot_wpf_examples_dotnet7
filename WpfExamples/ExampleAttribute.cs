@@ -4,9 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace WpfExamples
 {
-    using System;
 
     public class ExampleAttribute : Attribute
     {

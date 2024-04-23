@@ -7,11 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows;
+using WpfExamples;
+
 namespace AnimationsDemo
 {
-    using System.Windows;
-
-    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -1,19 +1,14 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
-using GraphCtrlLib;
-using OxyPlot.Axes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using GraphCtrlLib;
+using GraphCtrlLib.Message;
 
 namespace DynamicCreateTest
 {
@@ -132,7 +127,7 @@ namespace DynamicCreateTest
             #region Messenger
 
             var Messeenger = WeakReferenceMessenger.Default;
-            Messeenger.Register<GraphCtrlLib.Message.SharedMessge>(this, OnMessageReceived);
+            Messeenger.Register<SharedMessge>(this, OnMessageReceived);
            
             #endregion
 
@@ -142,7 +137,7 @@ namespace DynamicCreateTest
         /// </summary>
         /// <param name="obj"></param> 객체 전송자
         /// <param name="message"></param> 메세지
-        private void OnMessageReceived(object obj, GraphCtrlLib.Message.SharedMessge message)
+        private void OnMessageReceived(object obj, SharedMessge message)
         {
             double dataX = message.DataX;
             double dataY = message.DataY;

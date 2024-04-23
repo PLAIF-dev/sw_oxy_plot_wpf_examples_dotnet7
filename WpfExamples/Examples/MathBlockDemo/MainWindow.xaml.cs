@@ -1,6 +1,7 @@
-﻿namespace MathBlockDemo
+﻿using WpfExamples;
+
+namespace MathBlockDemo
 {
-    using WpfExamples;
 
     [Example(null, "MathBlock control")]
     public partial class MainWindow

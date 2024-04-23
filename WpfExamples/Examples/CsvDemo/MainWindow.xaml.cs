@@ -7,19 +7,18 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Diagnostics;
+using System.IO;
+using System.Windows;
+using System.Windows.Controls;
+using Microsoft.Win32;
+using OxyPlot;
+using OxyPlot.Wpf;
+using WpfExamples;
+using SvgExporter = OxyPlot.SvgExporter;
+
 namespace CsvDemo
 {
-    using System.Diagnostics;
-    using System.IO;
-    using System.Windows;
-    using System.Windows.Controls;
-
-    using Microsoft.Win32;
-
-    using OxyPlot;
-    using OxyPlot.Wpf;
-
-    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -83,7 +82,7 @@ namespace CsvDemo
                         break;
                     case ".svg":
                         var rc = new CanvasRenderContext(new Canvas());
-                        var svg = OxyPlot.SvgExporter.ExportToString(this.vm.Model, plot1.ActualWidth, plot1.ActualHeight, false, rc);
+                        var svg = SvgExporter.ExportToString(this.vm.Model, plot1.ActualWidth, plot1.ActualHeight, false, rc);
                         File.WriteAllText(dlg.FileName, svg);
                         break;
                     case ".pdf":
@@ -122,7 +121,7 @@ namespace CsvDemo
         private void CopySvg_Click(object sender, RoutedEventArgs e)
         {
             var rc = new CanvasRenderContext(null);
-            var svg = OxyPlot.SvgExporter.ExportToString(this.vm.Model, plot1.ActualWidth, plot1.ActualHeight, true, rc);
+            var svg = SvgExporter.ExportToString(this.vm.Model, plot1.ActualWidth, plot1.ActualHeight, true, rc);
             Clipboard.SetText(svg);
         }
 

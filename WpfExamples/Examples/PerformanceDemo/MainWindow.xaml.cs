@@ -8,17 +8,15 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System;
+using System.Collections.Generic;
+using System.Windows;
+using OxyPlot;
+using OxyPlot.Series;
+using WpfExamples;
 
 namespace PerformanceDemo
 {
-    using System.Collections.Generic;
-    using System.Windows;
-
-    using OxyPlot;
-    using OxyPlot.Series;
-
-    using WpfExamples;
-    using System;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

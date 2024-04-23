@@ -13,10 +13,10 @@
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace WorldStatisticsDemo
 {
-    using System.Text;
 
     /// <summary>
     /// A class for comma-separated value files

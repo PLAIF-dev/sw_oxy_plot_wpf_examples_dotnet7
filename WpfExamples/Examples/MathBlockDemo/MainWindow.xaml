@@ -11,7 +11,7 @@
                         <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
-                            <Canvas x:Name="PART_Canvas"></Canvas>
+                            <Canvas x:Name="PART_Canvas" />
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>

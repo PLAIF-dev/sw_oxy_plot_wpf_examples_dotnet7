@@ -7,14 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows;
+using OxyPlot;
+using OxyPlot.Series;
+using WpfExamples;
+
 namespace ScatterDemo
 {
-    using System.Windows;
-
-    using OxyPlot;
-    using OxyPlot.Series;
-
-    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

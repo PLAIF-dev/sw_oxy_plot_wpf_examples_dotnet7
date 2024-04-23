@@ -1,12 +1,10 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+﻿using System;
+using System.Linq;
+using CommunityToolkit.Mvvm.Messaging;
 using GraphCtrlLib.Message;
 using OxyPlot;
+using OxyPlot.Axes;
 using OxyPlot.Series;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GraphCtrlLib.CustomTrackerManipulator
 {
@@ -48,7 +46,7 @@ namespace GraphCtrlLib.CustomTrackerManipulator
         public void ShowTracker( Series series, DataPoint point, ScreenPoint sPoint, object obj, int Index)
         {         
             //DataPoint를 가지고 현재 객체의 ScreenPoint를 얻는다.
-            var xAxis = this.PlotView.ActualModel.Axes.FirstOrDefault(a => a.Position == OxyPlot.Axes.AxisPosition.Bottom);
+            var xAxis = this.PlotView.ActualModel.Axes.FirstOrDefault(a => a.Position == AxisPosition.Bottom);
 
             if(xAxis != null) 
             {

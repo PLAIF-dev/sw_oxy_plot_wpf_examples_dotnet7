@@ -5,10 +5,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System.Threading.Tasks;
+
 namespace AnimationsDemo
 {
-    using System;
-    using System.Threading.Tasks;
 
     public interface IAnimationViewModel
     {

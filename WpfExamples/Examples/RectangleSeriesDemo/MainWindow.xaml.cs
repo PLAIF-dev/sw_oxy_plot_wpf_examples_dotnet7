@@ -1,12 +1,11 @@
-﻿namespace RectangleSeriesDemo
+﻿using System.Collections.Generic;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+using WpfExamples;
+
+namespace RectangleSeriesDemo
 {
-    using OxyPlot;
-    using OxyPlot.Series;
-
-    using WpfExamples;
-    using System.Collections.Generic;
-
-    using OxyPlot.Axes;
 
     public class RectangleWithValue
     {

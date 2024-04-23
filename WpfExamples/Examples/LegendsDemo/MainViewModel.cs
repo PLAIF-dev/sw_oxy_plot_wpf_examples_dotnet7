@@ -4,17 +4,18 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using OxyPlot;
+using OxyPlot.Legends;
+using OxyPlot.Series;
+using PropertyTools.DataAnnotations;
+using WpfExamples;
+using HorizontalAlignment = OxyPlot.HorizontalAlignment;
+
 namespace LegendsDemo
 {
-    using System;
-    using OxyPlot;
-    using OxyPlot.Series;
-    using OxyPlot.Legends;
 
-    using PropertyTools.DataAnnotations;
-    using WpfExamples;
-
-    using HorizontalAlignment = OxyPlot.HorizontalAlignment;
+    using HorizontalAlignment = HorizontalAlignment;
 
     public class MainViewModel : Observable
     {

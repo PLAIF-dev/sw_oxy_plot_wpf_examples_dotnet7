@@ -4,7 +4,7 @@
     <oxy:PlotView Model="{Binding Model}">
         <oxy:PlotView.ContextMenu>
             <ContextMenu>
-                <MenuItem Header="Reset" Command="{Binding ResetCommand}"></MenuItem>
+                <MenuItem Header="Reset" Command="{Binding ResetCommand}" />
             </ContextMenu>
         </oxy:PlotView.ContextMenu>
     </oxy:PlotView>

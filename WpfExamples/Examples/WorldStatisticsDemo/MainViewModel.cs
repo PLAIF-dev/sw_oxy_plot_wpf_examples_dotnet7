@@ -4,15 +4,15 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Globalization;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Legends;
+using OxyPlot.Series;
+
 namespace WorldStatisticsDemo
 {
-    using System.Collections.Generic;
-    using System.Globalization;
-
-    using OxyPlot;
-    using OxyPlot.Axes;
-    using OxyPlot.Series;
-    using OxyPlot.Legends;
 
     /// <summary>
     /// Provides a view model for the main view.

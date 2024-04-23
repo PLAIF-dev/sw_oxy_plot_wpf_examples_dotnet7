@@ -7,10 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows;
+using System.Windows.Controls;
+
 namespace OxyPlot.Wpf
 {
-    using System.Windows;
-    using System.Windows.Controls;
 
     /// <summary>
     /// Provides a control for displaying simple math.

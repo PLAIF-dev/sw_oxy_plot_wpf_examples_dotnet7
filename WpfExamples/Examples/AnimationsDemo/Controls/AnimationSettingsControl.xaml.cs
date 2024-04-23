@@ -4,9 +4,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Windows;
+
 namespace AnimationsDemo
 {
-    using System.Windows;
 
     public partial class AnimationSettingsControl
     {

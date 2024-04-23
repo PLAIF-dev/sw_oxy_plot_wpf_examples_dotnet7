@@ -7,18 +7,17 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+using WpfExamples;
+
 namespace HistogramDemo
 {
-    using System;
-    using System.Windows;
-    using System.Windows.Input;
-    using System.Windows.Media.Imaging;
-
-    using OxyPlot;
-    using OxyPlot.Axes;
-    using OxyPlot.Series;
-
-    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

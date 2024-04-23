@@ -5,12 +5,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
+using System;
+using System.Diagnostics;
+using OxyPlot.Axes;
+
 namespace AnimationsDemo
 {
-    using System;
-    using System.Diagnostics;
-
-    using OxyPlot.Axes;
 
     [DebuggerDisplay("X: {X} => {FinalX} | Y: {Y} => {FinalY}")]
     public class Pnl : IAnimatablePoint

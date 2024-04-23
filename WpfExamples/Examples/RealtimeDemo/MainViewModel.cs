@@ -4,16 +4,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+
 namespace RealtimeDemo
 {
-    using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Threading;
-
-    using OxyPlot;
-    using OxyPlot.Axes;
-    using OxyPlot.Series;
 
     public enum SimulationType
     {

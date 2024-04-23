@@ -4,16 +4,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Globalization;
+using System.IO;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Legends;
+using OxyPlot.Series;
+using WpfExamples;
+
 namespace CsvDemo
 {
-    using System.Globalization;
-    using System.IO;
-    using OxyPlot;
-    using OxyPlot.Axes;
-    using OxyPlot.Series;
-    using OxyPlot.Legends;
-
-    using WpfExamples;
 
     public class MainViewModel : Observable
     {

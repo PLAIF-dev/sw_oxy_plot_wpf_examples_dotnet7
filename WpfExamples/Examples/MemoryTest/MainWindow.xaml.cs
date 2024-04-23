@@ -7,13 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Windows;
+using System.Windows.Controls;
+using WpfExamples;
+
 namespace MemoryTest
 {
-    using System;
-    using System.Windows;
-    using System.Windows.Controls;
-
-    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -1,13 +1,13 @@
-﻿namespace OxyPlotTest
-{
-    using System;
-    using System.ComponentModel;
-    using System.Diagnostics;
-    using System.Threading;
+﻿using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Threading;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 
-    using OxyPlot;
-    using OxyPlot.Axes;
-    using OxyPlot.Series;
+namespace OxyPlotTest
+{
 
     public enum SimulationType
     {

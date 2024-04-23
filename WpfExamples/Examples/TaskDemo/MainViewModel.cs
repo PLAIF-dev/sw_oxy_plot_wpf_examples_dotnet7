@@ -4,16 +4,17 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Threading;
+using OxyPlot;
+using OxyPlot.Series;
+
 namespace TaskDemo
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Threading;
-    using System.Threading.Tasks;
-
-    using OxyPlot;
-    using OxyPlot.Series;
 
     public class MainViewModel : IDisposable
     {
@@ -37,7 +38,7 @@ namespace TaskDemo
             this.points.Add(new DataPoint(0, 0));
             this.PlotModel.Series.Add(this.LineSeries1);
 
-            System.Windows.Threading.Dispatcher.CurrentDispatcher.Thread.Name = "UI thread";
+            Dispatcher.CurrentDispatcher.Thread.Name = "UI thread";
             Debug.WriteLine("The MainViewModel is created on: " + Thread.CurrentThread.Name);
 
             // Create a cancellation token source so we can cancel the worker task when

@@ -7,9 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using WpfExamples;
+
 namespace WorldStatisticsDemo
 {
-    using WpfExamples;
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
